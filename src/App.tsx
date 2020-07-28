@@ -1,26 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Switch, Route } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+// Components
+import SideDrawer from './components/SideDrawer/SideDrawer';
+
+// Pages
+import NewRepair from './pages/NewRepair/NewRepair';
+import Index from './pages/Index/Index';
+import Repairs from './pages/Repairs/Repairs';
+import Settings from './pages/Settings/Settings';
+import Customers from './pages/Settings/Customers/Customers';
+import Search from './pages/Search/Search';
+
+// Styles
+import * as Styled from './stylesApp';
+
+const App: React.FC = () => {
+	return (
+		<>
+			<Styled.Wrapper>
+				<SideDrawer />
+				<Switch>
+					<Route path='/nowa-naprawa' component={NewRepair} />
+					<Route path='/lista-napraw' component={Repairs} />
+					<Route path='/ustawienia' component={Settings} />
+					<Route path='/klienci' component={Customers} />
+					<Route path='/szukaj' component={Search} />
+					<Route path='/' component={Index} />
+				</Switch>
+			</Styled.Wrapper>
+		</>
+	);
+};
 
 export default App;
