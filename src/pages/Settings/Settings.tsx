@@ -8,7 +8,7 @@ import * as Styled from './stylesSettings';
 import { Typography, Tabs, Tab, AppBar } from '@material-ui/core';
 import Customers from './Customers/Customers';
 import General from './General/General';
-import Repairs from '../Repairs/Repairs';
+import Repairs from './Repairs/Repairs';
 import Device from './Device/Device';
 
 const TABS_LIST = [
