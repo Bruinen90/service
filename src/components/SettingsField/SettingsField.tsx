@@ -1,101 +1,56 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
 
 //Styles
 import * as Styled from './stylesSettingsField';
-import {
-	TextField,
-	Typography,
-	RadioGroup,
-	Radio,
-	FormControlLabel,
-	Button,
-	FormControl,
-	InputLabel,
-	Input,
-	FormHelperText,
-	CardActions,
-	CardContent,
-} from '@material-ui/core';
 
-const SettingsField = () => {
-	const [header, setHeader] = useState('Nowe pole');
+// Components
+import SettingsInEdit from '../SettingsInEdit/SettingsInEdit';
+import SettingsRow from '../SettingsRow/SettingsRow';
 
-	// use-form-hook
-	const { register, handleSubmit, watch, errors } = useForm();
+//Types
+import { FieldType } from '../../types/Settings';
+interface SettingsFieldProps {
+	name: string;
+	type: FieldType;
+}
 
-	const watchFieldType = watch(['type-text', 'type-radio', 'type-checkbox']);
+const SettingsField: React.FC<SettingsFieldProps> = ({ name, type }) => {
+	const [inEdit, setInEdit] = useState(false);
 
-	const onSubmit = (data: any) => {
-		const dataCopy = { ...data };
-		const bolleanedData = Object.keys(dataCopy).forEach(key => {
-			if (key.startsWith('type-')) {
-				if (dataCopy[key] !== '') {
-					dataCopy.type = dataCopy[key];
-				}
-				delete dataCopy[key];
-			}
-		});
+	const handleSetInEdit = () => {
+		setInEdit(true);
+	};
 
-		console.log(dataCopy);
+	const handleClickSave = (data: any) => {
+		console.log('SAVING', data);
+		setInEdit(false);
+	};
 
-		setHeader(data.fieldLabel);
+	const handleClickCancel = () => {
+		console.log('CANCELING EDIT');
+		setInEdit(false);
+	};
+
+	const handleClickDelete = () => {
+		console.log('DELETING');
 	};
 	return (
 		<Styled.Wrapper>
-			<form onSubmit={handleSubmit(onSubmit)}>
-				<CardContent>
-					<Typography variant='h4'>{header}</Typography>
-					<FormControl error={errors.fieldLabel !== undefined}>
-						<InputLabel>Etykieta pola</InputLabel>
-						<Input
-							inputRef={register({
-								required: true,
-								maxLength: 35,
-							})}
-							name='fieldLabel'
-						/>
-						<FormHelperText>
-							Etykieta musi zawierać przynajmniej 1 oraz
-							maksymalnie 35 znaków
-						</FormHelperText>
-					</FormControl>
-					{/* <input type='text' ref={register} /> */}
-					<Typography variant='h5'>Typ pola</Typography>
-					<RadioGroup name='fieldType'>
-						<FormControlLabel
-							value='text'
-							name='type-text'
-							inputRef={register}
-							control={<Radio />}
-							label='Dowolna wartość tekstowa'
-						/>
-						<FormControlLabel
-							value='radio'
-							name='type-radio'
-							inputRef={register}
-							control={<Radio />}
-							label='Wybór z listy'
-						/>{' '}
-						<FormControlLabel
-							value='checkbox'
-							name='type-checkbox'
-							inputRef={register}
-							control={<Radio />}
-							label='Wybór tak/nie'
-						/>
-					</RadioGroup>
-					{watchFieldType['type-radio'] === 'radio' && (
-						<Typography>Radio!!</Typography>
-					)}
-				</CardContent>
-				<CardActions>
-					<Button variant='contained' color='primary' type='submit'>
-						Zapisz
-					</Button>
-					<Button color='secondary'>Anuluj</Button>
-				</CardActions>
-			</form>
+			{inEdit ? (
+				<SettingsInEdit
+					name={name}
+					type={type}
+					clickedSave={handleClickSave}
+					clickedCancel={handleClickCancel}
+				/>
+			) : (
+				<SettingsRow
+					name={name}
+					type={type}
+					clickedEdit={handleSetInEdit}
+					clickedDelete={handleClickDelete}
+				/>
+			)}
 		</Styled.Wrapper>
 	);
 };
