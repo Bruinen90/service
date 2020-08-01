@@ -17,10 +17,10 @@ export default (state: Settings = DEFAULT_SETTINGS, action: Action) => {
 			const dataToAdd = action.payload.data as Field;
 			return {
 				...state,
-				[settingsCategoryToAdd]: [
-					...state[settingsCategoryToAdd].fields,
-					dataToAdd,
-				],
+				[settingsCategoryToAdd]: {
+					...state[settingsCategoryToAdd],
+					fields: [...state[settingsCategoryToAdd].fields, dataToAdd],
+				},
 			};
 		case actionTypes.DELETE_SETTING_FIELD:
 			const settingsCategoryToDelete = action.payload
@@ -28,9 +28,12 @@ export default (state: Settings = DEFAULT_SETTINGS, action: Action) => {
 			const { deleteId } = action.payload;
 			return {
 				...state,
-				[settingsCategoryToDelete]: state[
-					settingsCategoryToDelete
-				].fields.filter(field => field._id !== deleteId),
+				[settingsCategoryToDelete]: {
+					...state[settingsCategoryToDelete],
+					fields: state[settingsCategoryToDelete].fields.filter(
+						field => field._id !== deleteId
+					),
+				},
 			};
 		case actionTypes.UPDATE_SETTING_FIELD:
 			return { ...state };

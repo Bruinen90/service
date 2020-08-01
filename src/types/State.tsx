@@ -1,4 +1,8 @@
 import { Field } from './Settings';
+export interface State {
+	settings: Settings;
+}
+
 export interface Action {
 	type: string;
 	payload?: any;
