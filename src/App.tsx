@@ -14,10 +14,12 @@ import Search from './pages/Search/Search';
 
 // Styles
 import * as Styled from './stylesApp';
+import Login from './pages/Login/Login';
 
 const App: React.FC = () => {
 	return (
 		<>
+			{/* <Login /> */}
 			<Styled.Wrapper>
 				<SideDrawer />
 				<Switch>
