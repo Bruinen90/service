@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
+import axios from 'axios';
 
 // Components
 import SideDrawer from './components/SideDrawer/SideDrawer';
@@ -16,11 +17,13 @@ import Search from './pages/Search/Search';
 import * as Styled from './stylesApp';
 import Login from './pages/Login/Login';
 
+axios.defaults.baseURL = 'http://localhost:8080';
+
 const App: React.FC = () => {
 	return (
 		<>
-			{/* <Login /> */}
-			<Styled.Wrapper>
+			<Login />
+			{/* <Styled.Wrapper>
 				<SideDrawer />
 				<Switch>
 					<Route path='/nowa-naprawa' component={NewRepair} />
@@ -30,7 +33,7 @@ const App: React.FC = () => {
 					<Route path='/szukaj' component={Search} />
 					<Route path='/' component={Index} />
 				</Switch>
-			</Styled.Wrapper>
+			</Styled.Wrapper> */}
 		</>
 	);
 };

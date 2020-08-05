@@ -1,11 +1,17 @@
 import { Field } from './Settings';
 export interface State {
+	company: Company;
 	settings: Settings;
 }
 
 export interface Action {
 	type: string;
 	payload?: any;
+}
+
+export interface Company {
+	_id: string;
+	name: string;
 }
 
 export type SettingsCategories = 'repairs' | 'customers' | 'devices';

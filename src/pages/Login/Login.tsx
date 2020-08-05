@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import * as watcherTypes from '../../store/sagas/watcherTypes';
+import { useDispatch } from 'react-redux';
 
 //Styles
 import * as Styled from './stylesLogin';
@@ -13,6 +15,7 @@ interface LoginForm {
 }
 
 const Login: React.FC<LoginProps> = () => {
+	const dispatch = useDispatch();
 	const [loginData, setLoginData] = useState<LoginForm>({
 		login: '',
 		password: '',
@@ -36,7 +39,10 @@ const Login: React.FC<LoginProps> = () => {
 
 	const handleLoginSubmit = (event: React.FormEvent) => {
 		event.preventDefault();
-		console.log(loginData);
+		dispatch({
+			type: watcherTypes.WATCH_LOGIN_SERVICE,
+			payload: loginData,
+		});
 	};
 	return (
 		<Styled.Wrapper>
