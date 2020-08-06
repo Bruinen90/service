@@ -21,6 +21,7 @@ import Login from './pages/Login/Login';
 
 // Types
 import { State } from './types/State';
+import Loading from './pages/Loading/Loading';
 
 axios.defaults.baseURL = 'http://localhost:8080';
 
@@ -31,10 +32,13 @@ const App: React.FC = () => {
 	}, [dispatch]);
 
 	const company = useSelector((state: State) => state.company);
+	const loading = useSelector((state: State) => state.loading);
 
 	return (
 		<>
-			{company && company._id ? (
+			{loading.general && loading.general.isLoading ? (
+				<Loading />
+			) : company && company._id ? (
 				<Styled.Wrapper>
 					<SideDrawer />
 					<Switch>

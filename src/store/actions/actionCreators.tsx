@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 import { Field } from '../../types/Settings';
-import { SettingsCategories } from '../../types/State';
+import { SettingsCategories, LoadingCategories } from '../../types/State';
 
 export const createSettingsField = (payload: {
 	settingsCategory: SettingsCategories;
@@ -22,4 +22,13 @@ export const deleteSettingsFiels = (payload: {
 		category: payload.settingsCategory,
 		deleteId: payload.deleteId,
 	},
+});
+
+export const setLoader = (payload: {
+	loadingCategory: LoadingCategories;
+	isLoading: boolean;
+	recordId?: string;
+}) => ({
+	type: actionTypes.SET_LOADER,
+	payload,
 });

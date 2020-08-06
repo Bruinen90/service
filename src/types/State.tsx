@@ -2,6 +2,7 @@ import { Field } from './Settings';
 export interface State {
 	company: Company;
 	settings: Settings;
+	loading: Loaders;
 }
 
 export interface Action {
@@ -72,3 +73,17 @@ export const DEFAULT_SETTINGS: Settings = {
 		],
 	},
 };
+
+export type LoadingCategories = keyof Loaders;
+
+interface LoadingData {
+	isLoading: boolean;
+	recordId?: boolean;
+}
+
+export interface Loaders {
+	general?: LoadingData;
+	newRecord?: [LoadingData];
+	editRecord?: [LoadingData];
+	fetchData?: [LoadingData];
+}
