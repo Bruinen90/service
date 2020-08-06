@@ -1,6 +1,9 @@
 import { put } from 'redux-saga/effects';
 import axios from 'axios';
 
+// Actions
+import * as actionTypes from '../../actions/actionTypes';
+
 // Types
 import { LoginDataInterface } from '../../../types/Auth';
 
@@ -10,11 +13,15 @@ export function* loginService(action: {
 }) {
 	try {
 		const response = yield axios.post('auth/login', action.payload);
-		if (response.status === 200) {
+		if (response && response.status === 200) {
 			const { token, _id, name } = response.data;
 			yield localStorage.setItem('token', token);
 			axios.defaults.headers.common['Authorization'] = token.toString();
 			// Action to set company name and _id in state
+			yield put({
+				type: actionTypes.SET_SERVICE_LOGIN,
+				payload: { _id, name },
+			});
 		} else {
 			console.log('Unhadled login error');
 		}

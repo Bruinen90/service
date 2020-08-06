@@ -10,8 +10,8 @@ export interface Action {
 }
 
 export interface Company {
-	_id: string;
-	name: string;
+	_id?: string;
+	name?: string;
 }
 
 export type SettingsCategories = 'repairs' | 'customers' | 'devices';
