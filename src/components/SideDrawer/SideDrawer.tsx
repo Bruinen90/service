@@ -29,6 +29,7 @@ const SideDrawer: React.FC<DrawerProps> = () => {
 						style: {
 							width: Styled.DRAWER_WIDTH,
 							padding: '1rem',
+							height: '100%',
 						},
 					}}
 				>

@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import * as watcherTypes from '../../store/sagas/watcherTypes';
 import { useDispatch } from 'react-redux';
 
+// Components
+import ButtonWithLoader from '../../components/ButtonWithLoader/ButtonWithLoader';
+
 //Styles
 import * as Styled from './stylesLogin';
-import { TextField, Button } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 
 //Types
 interface LoginProps {}
@@ -62,9 +65,14 @@ const Login: React.FC<LoginProps> = () => {
 						onChange={changePassword}
 						style={{ marginBottom: '1rem' }}
 					/>
-					<Button variant='contained' type='submit'>
+					<ButtonWithLoader
+						variant='contained'
+						type='submit'
+						loadingCategory='fetchData'
+						recordId='loggingIn'
+					>
 						Zaloguj się
-					</Button>
+					</ButtonWithLoader>
 				</Styled.LoginForm>
 			</Styled.LoginBox>
 		</Styled.Wrapper>

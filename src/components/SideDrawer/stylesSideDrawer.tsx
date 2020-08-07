@@ -1,5 +1,5 @@
 import { styled } from '@material-ui/core/styles';
-import { Drawer, IconButton } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 
 export const DRAWER_WIDTH = '240px';
 

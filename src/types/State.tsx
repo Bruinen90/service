@@ -76,14 +76,14 @@ export const DEFAULT_SETTINGS: Settings = {
 
 export type LoadingCategories = keyof Loaders;
 
-interface LoadingData {
+export interface LoadingData {
 	isLoading: boolean;
-	recordId?: boolean;
+	recordId?: string;
 }
 
 export interface Loaders {
 	general?: LoadingData;
-	newRecord?: [LoadingData];
-	editRecord?: [LoadingData];
-	fetchData?: [LoadingData];
+	newRecord?: LoadingData[];
+	editRecord?: LoadingData[];
+	fetchData?: LoadingData[];
 }
