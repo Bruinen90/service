@@ -39,12 +39,16 @@ const ButtonWithLoader: React.FC<ButtonWIthLoaderProps> = ({
 		}
 	}
 	return (
-		<Button style={{ position: 'relative' }} {...other}>
+		<Button
+			style={{ position: 'relative' }}
+			{...other}
+			disabled={isLoading}
+		>
 			<>
 				<Styled.Text isLoading={isLoading}>{children}</Styled.Text>
 				{isLoading && (
 					<Styled.LoaderContainer>
-						<CircularProgress />
+						<CircularProgress size={'1em'} />
 					</Styled.LoaderContainer>
 				)}
 			</>
