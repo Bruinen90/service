@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 //Styles
 import * as Styled from './stylesCustomers';
-import { Typography } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 import SettingsField from '../../../components/SettingsField/SettingsField';
 import { State } from '../../../types/State';
 
@@ -18,6 +18,9 @@ const Customers: React.FC<CustomersProps> = () => {
 	return (
 		<Styled.Wrapper>
 			<Typography variant='h3'>Ustawienia klientów</Typography>
+			<Button variant='contained' color='primary'>
+				Nowe pole
+			</Button>
 			{fields.map(field => (
 				<SettingsField
 					_id={field._id}
