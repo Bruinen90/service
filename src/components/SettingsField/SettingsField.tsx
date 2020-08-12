@@ -17,6 +17,8 @@ interface SettingsFieldProps {
 	name: string;
 	type: FieldType;
 	category: SettingsCategories;
+	newField?: boolean;
+	doneEditing?: () => void;
 }
 
 const SettingsField: React.FC<SettingsFieldProps> = ({
@@ -24,22 +26,35 @@ const SettingsField: React.FC<SettingsFieldProps> = ({
 	name,
 	type,
 	category,
+	newField = false,
+	doneEditing,
 }) => {
 	const dispatch = useDispatch();
 
-	const [inEdit, setInEdit] = useState(false);
+	const [inEdit, setInEdit] = useState(newField);
 
 	const handleSetInEdit = () => {
 		setInEdit(true);
 	};
 
 	const handleClickSave = (data: any) => {
-		console.log('SAVING', data);
+		dispatch(
+			actionCreators.createSettingsField({
+				settingsCategory: category,
+				newFieldData: data,
+			})
+		);
+		if (doneEditing) {
+			doneEditing();
+		}
 		setInEdit(false);
 	};
 
 	const handleClickCancel = () => {
 		console.log('CANCELING EDIT');
+		if (doneEditing) {
+			doneEditing();
+		}
 		setInEdit(false);
 	};
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 //Styles
@@ -15,12 +15,34 @@ const Customers: React.FC<CustomersProps> = () => {
 		(state: State) => state.settings.customers.fields
 	);
 
+	const [newFieldInEdit, setNewFieldInEdit] = useState(false);
+
+	const toggleNewField = () => {
+		setNewFieldInEdit(prev => !prev);
+	};
+
 	return (
 		<Styled.Wrapper>
 			<Typography variant='h3'>Ustawienia klientów</Typography>
-			<Button variant='contained' color='primary'>
-				Nowe pole
-			</Button>
+			{!newFieldInEdit ? (
+				<Button
+					variant='contained'
+					color='primary'
+					onClick={toggleNewField}
+				>
+					Nowe pole
+				</Button>
+			) : (
+				<SettingsField
+					_id='new-field'
+					key='new-field'
+					name='Nazwa pola'
+					type='text'
+					category='customers'
+					newField={true}
+					doneEditing={toggleNewField}
+				/>
+			)}
 			{fields.map(field => (
 				<SettingsField
 					_id={field._id}

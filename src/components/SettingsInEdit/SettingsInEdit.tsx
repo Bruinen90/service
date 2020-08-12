@@ -57,14 +57,14 @@ const SettingsInEdit: React.FC<SettingsInEditProps> = ({
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<CardContent>
 					<Typography variant='h4'>{header}</Typography>
-					<FormControl error={errors.fieldLabel !== undefined}>
+					<FormControl error={errors.name !== undefined}>
 						<InputLabel>Etykieta pola</InputLabel>
 						<Input
 							inputRef={register({
 								required: true,
 								maxLength: 35,
 							})}
-							name='fieldLabel'
+							name='name'
 							defaultValue={name}
 						/>
 						<FormHelperText>
