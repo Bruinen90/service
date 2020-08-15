@@ -36,7 +36,7 @@ const Customers: React.FC<CustomersProps> = () => {
 				<SettingsField
 					_id='new-field'
 					key='new-field'
-					name='Nazwa pola'
+					name=''
 					type='text'
 					category='customers'
 					newField={true}

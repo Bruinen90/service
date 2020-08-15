@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
 
 //Styles
 import * as Styled from './stylesSettingsInEdit';
@@ -15,6 +14,7 @@ import {
 	FormHelperText,
 	CardActions,
 	CardContent,
+	TextField,
 } from '@material-ui/core';
 
 // Types
@@ -26,79 +26,158 @@ interface SettingsInEditProps {
 	clickedSave: (dataCopy: any) => void;
 }
 
+interface FormInterface {
+	name: {
+		value: string;
+		hasError: boolean;
+		touched: boolean;
+	};
+	type: {
+		value: 'text' | 'radio' | 'checkbox';
+		hasError: boolean;
+		touched: boolean;
+	};
+	radios: string[];
+}
+
 const SettingsInEdit: React.FC<SettingsInEditProps> = ({
 	name,
 	type,
 	clickedSave,
 	clickedCancel,
 }) => {
-	const [header, setHeader] = useState(name || 'Nowe pole');
+	const [formData, setFormData] = useState<FormInterface>({
+		name: {
+			value: name || '',
+			hasError: false,
+			touched: false,
+		},
+		type: {
+			value: type || 'text',
+			hasError: false,
+			touched: false,
+		},
+		radios: [''],
+	});
 
-	// use-form-hook
-	const { register, handleSubmit, watch, errors } = useForm();
+	const handleUpdateForm = (event: React.ChangeEvent) => {
+		const input = event.target as HTMLInputElement;
+		const fieldName = input.getAttribute('name') as keyof FormInterface;
+		setFormData(prev => ({
+			...prev,
+			[fieldName]: { value: input.value, touched: true, hasError: false },
+		}));
+	};
 
-	const watchFieldType = watch(['type-text', 'type-radio', 'type-checkbox']);
+	const handleAddNewRadio = () => {
+		setFormData(prev => ({
+			...prev,
+			radios: [...prev.radios, ''],
+		}));
+	};
 
-	const onSubmit = (data: any) => {
-		const dataCopy = { ...data };
-		Object.keys(dataCopy).forEach(key => {
-			if (key.startsWith('type-')) {
-				if (dataCopy[key] !== '') {
-					dataCopy.type = dataCopy[key];
-				}
-				delete dataCopy[key];
-			}
+	const handleRemoveRadio = (index: number) => {
+		setFormData(prev => {
+			const newRadios = [...prev.radios];
+			newRadios.splice(index, 1);
+			return {
+				...prev,
+				radios: newRadios,
+			};
 		});
+	};
 
-		clickedSave(dataCopy);
+	const handleChangeRadio = (event: React.ChangeEvent) => {
+		const radioInput = event.target as HTMLInputElement;
+		const radioIndex = parseInt(
+			radioInput.getAttribute('radioindex')!
+		) as number;
+		setFormData(prev => {
+			const newRadios = [...prev.radios];
+			newRadios[radioIndex] = radioInput.value;
+			return {
+				...prev,
+				radios: newRadios,
+			};
+		});
+	};
+
+	const handleSubmit = () => {
+		const { name, type, radios } = formData;
+		clickedSave({ name: name.value, type: type.value, radios });
 	};
 	return (
 		<Styled.Wrapper>
-			<form onSubmit={handleSubmit(onSubmit)}>
+			<form onSubmit={handleSubmit}>
 				<CardContent>
-					<Typography variant='h4'>{header}</Typography>
-					<FormControl error={errors.name !== undefined}>
+					<Typography variant='h4'>Tworzenie pola</Typography>
+					<FormControl error={false}>
 						<InputLabel>Etykieta pola</InputLabel>
 						<Input
-							inputRef={register({
-								required: true,
-								maxLength: 35,
-							})}
 							name='name'
 							defaultValue={name}
+							onChange={handleUpdateForm}
 						/>
 						<FormHelperText>
 							Etykieta musi zawierać przynajmniej 1 oraz
 							maksymalnie 35 znaków
 						</FormHelperText>
 					</FormControl>
-					{/* <input type='text' ref={register} /> */}
 					<Typography variant='h5'>Typ pola</Typography>
-					<RadioGroup name='fieldType'>
+					<RadioGroup name='fieldType' onChange={handleUpdateForm}>
 						<FormControlLabel
 							value='text'
-							name='type-text'
-							inputRef={register}
-							control={<Radio />}
+							name='type'
+							control={
+								<Radio
+									checked={formData.type.value === 'text'}
+								/>
+							}
 							label='Dowolna wartość tekstowa'
 						/>
 						<FormControlLabel
 							value='radio'
-							name='type-radio'
-							inputRef={register}
-							control={<Radio />}
+							name='type'
+							control={
+								<Radio
+									checked={formData.type.value === 'radio'}
+								/>
+							}
 							label='Wybór z listy'
 						/>{' '}
 						<FormControlLabel
 							value='checkbox'
-							name='type-checkbox'
-							inputRef={register}
-							control={<Radio />}
+							name='type'
+							control={
+								<Radio
+									checked={formData.type.value === 'checkbox'}
+								/>
+							}
 							label='Wybór tak/nie'
 						/>
 					</RadioGroup>
-					{watchFieldType['type-radio'] === 'radio' && (
-						<Typography>Radio!!</Typography>
+					{formData.type.value === 'radio' && (
+						<>
+							<Typography variant='h5'>Pola wyboru:</Typography>
+							{formData.radios.map((radio, index) => (
+								<Styled.RadioRow key={index}>
+									<TextField
+										label='Wartość pola'
+										inputProps={{ radioindex: index }}
+										value={formData.radios[index]}
+										onChange={handleChangeRadio}
+									/>
+									<Button
+										onClick={() => handleRemoveRadio(index)}
+									>
+										Usuń
+									</Button>
+									<Button onClick={handleAddNewRadio}>
+										Dodaj kolejne
+									</Button>
+								</Styled.RadioRow>
+							))}
+						</>
 					)}
 				</CardContent>
 				<CardActions>
