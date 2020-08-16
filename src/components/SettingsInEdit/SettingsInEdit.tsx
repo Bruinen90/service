@@ -69,6 +69,29 @@ const SettingsInEdit: React.FC<SettingsInEditProps> = ({
 		}));
 	};
 
+	const handleValidateTextField = (event: React.FormEvent) => {
+		const input = event.target as HTMLInputElement;
+		if (!input.validity.valid) {
+			setFormData(prev => ({
+				...prev,
+				[input.name]: {
+					value: input.value,
+					hasError: true,
+					touched: true,
+				},
+			}));
+		} else {
+			setFormData(prev => ({
+				...prev,
+				[input.name]: {
+					value: input.value,
+					hasError: false,
+					touched: true,
+				},
+			}));
+		}
+	};
+
 	const handleAddNewRadio = () => {
 		setFormData(prev => ({
 			...prev,
@@ -104,23 +127,36 @@ const SettingsInEdit: React.FC<SettingsInEditProps> = ({
 
 	const handleSubmit = () => {
 		const { name, type, radios } = formData;
-		clickedSave({ name: name.value, type: type.value, radios });
+		const dataToSend = {
+			name: name.value,
+			type: type.value,
+			radios: radios.filter(radio => radio !== ''), //Remove empty fields
+		};
+		if (dataToSend.radios.length === 0) {
+			delete dataToSend.radios;
+		}
+		clickedSave(dataToSend);
 	};
 	return (
 		<Styled.Wrapper>
 			<form onSubmit={handleSubmit}>
 				<CardContent>
 					<Typography variant='h4'>Tworzenie pola</Typography>
-					<FormControl error={false}>
+					<FormControl error={formData.name.hasError}>
 						<InputLabel>Etykieta pola</InputLabel>
 						<Input
 							name='name'
 							defaultValue={name}
 							onChange={handleUpdateForm}
+							onBlur={handleValidateTextField}
+							inputProps={{
+								required: true,
+								minLength: 3,
+								maxLength: 45,
+							}}
 						/>
 						<FormHelperText>
-							Etykieta musi zawierać przynajmniej 1 oraz
-							maksymalnie 35 znaków
+							Etykieta musi zawierać od 3 do 45 znaków
 						</FormHelperText>
 					</FormControl>
 					<Typography variant='h5'>Typ pola</Typography>
@@ -163,7 +199,10 @@ const SettingsInEdit: React.FC<SettingsInEditProps> = ({
 								<Styled.RadioRow key={index}>
 									<TextField
 										label='Wartość pola'
-										inputProps={{ radioindex: index }}
+										inputProps={{
+											radioindex: index,
+											maxlength: 12,
+										}}
 										value={formData.radios[index]}
 										onChange={handleChangeRadio}
 									/>
