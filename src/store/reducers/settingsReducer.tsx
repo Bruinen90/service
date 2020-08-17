@@ -37,6 +37,17 @@ export default (state: Settings = DEFAULT_SETTINGS, action: Action) => {
 			};
 		case actionTypes.UPDATE_SETTING_FIELD:
 			return { ...state };
+		case actionTypes.SET_SETTINGS_FIELDS: {
+			const currentSettings = { ...state };
+			const newSettings = Object.keys(currentSettings).map(
+				settingsCategory => ({
+					// @ts-ignore
+					...currentSettings[settingCategory],
+					fields: action.payload[settingsCategory],
+				})
+			);
+			return newSettings;
+		}
 		default:
 			return { ...state };
 	}

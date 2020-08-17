@@ -42,16 +42,6 @@ export const DEFAULT_SETTINGS: Settings = {
 				name: 'Nazwisko',
 				type: 'text',
 			},
-			{
-				_id: 'phone',
-				name: 'Numer telefonu',
-				type: 'text',
-			},
-			{
-				_id: 'email',
-				name: 'Adres email',
-				type: 'text',
-			},
 		],
 	},
 	repairs: {

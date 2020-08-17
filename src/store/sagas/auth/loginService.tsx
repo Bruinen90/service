@@ -21,7 +21,6 @@ export function* loginService(action: {
 				axios.defaults.headers.common[
 					'Authorization'
 				] = token.toString();
-				// Action to set company name and _id in state
 				yield put({
 					type: actionTypes.SET_SERVICE_LOGIN,
 					payload: { _id, name },

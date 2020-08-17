@@ -201,7 +201,7 @@ const SettingsInEdit: React.FC<SettingsInEditProps> = ({
 										label='Wartość pola'
 										inputProps={{
 											radioindex: index,
-											maxlength: 12,
+											maxLength: 12,
 										}}
 										value={formData.radios[index]}
 										onChange={handleChangeRadio}
