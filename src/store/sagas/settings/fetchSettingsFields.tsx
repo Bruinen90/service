@@ -7,9 +7,9 @@ import { withLoader } from '../helpers';
 import { Field, FetchedField, FieldCategory } from '../../../types/Settings';
 
 interface CategorizedFields {
-	customer: Field[];
-	device: Field[];
-	repair: Field[];
+	customers: Field[];
+	devices: Field[];
+	repairs: Field[];
 }
 
 export function* fetchSettingsFields() {
@@ -17,16 +17,18 @@ export function* fetchSettingsFields() {
 		try {
 			const response = yield axios.get('settings/all-fields');
 			if (response.data) {
-				const settingsFields = response.data as FetchedField[];
+				console.log(response.data);
+				const settingsFields = response.data
+					.allSettingsFields as FetchedField[];
 				const categorizedFields: CategorizedFields = {
-					customer: settingsFields.filter(
-						fields => fields.category === 'customer'
+					customers: settingsFields.filter(
+						fields => fields.category === 'customers'
 					),
-					device: settingsFields.filter(
-						fields => fields.category === 'device'
+					devices: settingsFields.filter(
+						fields => fields.category === 'devices'
 					),
-					repair: settingsFields.filter(
-						fields => fields.category === 'repair'
+					repairs: settingsFields.filter(
+						fields => fields.category === 'repairs'
 					),
 				};
 				yield put({

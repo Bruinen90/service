@@ -1,6 +1,6 @@
 export type FieldType = 'text' | 'radio' | 'checkbox';
 
-export type FieldCategory = 'customer' | 'repair' | 'device';
+export type FieldCategory = 'customers' | 'repairs' | 'devices';
 
 export interface Field {
 	_id: string;
