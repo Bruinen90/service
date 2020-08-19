@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as actionCreators from '../../store/actions/actionCreators';
+import * as watcherTypes from '../../store/sagas/watcherTypes';
 
 //Styles
 import * as Styled from './stylesSettingsField';
@@ -60,12 +61,16 @@ const SettingsField: React.FC<SettingsFieldProps> = ({
 
 	const handleClickDelete = () => {
 		console.log('DELETING');
-		dispatch(
-			actionCreators.deleteSettingsFiels({
-				deleteId: _id,
-				settingsCategory: category,
-			})
-		);
+		dispatch({
+			type: watcherTypes.WATCH_DELETE_SETTINGS_FIELD,
+			payload: { _id: _id, category: category },
+		});
+		// dispatch(
+		// 	actionCreators.deleteSettingsFiels({
+		// 		deleteId: _id,
+		// 		settingsCategory: category,
+		// 	})
+		// );
 	};
 	return (
 		<Styled.Wrapper>
