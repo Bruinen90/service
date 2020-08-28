@@ -5,6 +5,7 @@ import { Typography } from '@material-ui/core';
 
 //Styles
 import * as Styled from './stylesNewRepair';
+import CustomerForm from '../../components/CustomerForm/CustomerForm';
 
 //Types
 interface NewRepairProps {}
@@ -14,6 +15,7 @@ const NewRepair: React.FC<NewRepairProps> = () => {
 	return (
 		<Styled.Wrapper>
 			<Typography variant='h1'>Nowa naprawa</Typography>
+			<CustomerForm />
 		</Styled.Wrapper>
 	);
 };
