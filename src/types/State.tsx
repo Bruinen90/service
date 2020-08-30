@@ -1,8 +1,10 @@
 import { Field } from './Settings';
+import { ICustomer } from './Customer';
 export interface State {
 	company: Company;
 	settings: Settings;
 	loading: Loaders;
+	newRepair: NewRepair;
 }
 
 export interface Action {
@@ -76,4 +78,8 @@ export interface Loaders {
 	newRecord?: LoadingData[];
 	editRecord?: LoadingData[];
 	fetchData?: LoadingData[];
+}
+
+export interface NewRepair {
+	customer: ICustomer;
 }

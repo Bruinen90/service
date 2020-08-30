@@ -6,6 +6,7 @@ import { loginService } from './auth/loginService';
 import { autoLogin } from './auth/autoLogin';
 import { createSettingsField } from './settings/createSettingsField';
 import { deleteSettingsField } from './settings/deleteSettingsField';
+import { createCustomer } from './customers/createCustomer';
 
 export default function* rootSaga() {
 	yield all([
@@ -19,5 +20,6 @@ export default function* rootSaga() {
 			watcherTypes.WATCH_DELETE_SETTINGS_FIELD,
 			deleteSettingsField
 		),
+		yield takeLatest(watcherTypes.WATCH_CREATE_CUSTOMER, createCustomer),
 	]);
 }

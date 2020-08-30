@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import * as watcherTypes from '../../store/sagas/watcherTypes';
 
 //Styles
 import * as Styled from './stylesCustomerForm';
@@ -17,6 +18,8 @@ import {
 interface CustomerFormProps {}
 
 const CustomerForm: React.FC<CustomerFormProps> = () => {
+	const dispatch = useDispatch();
+
 	const customerFields = useSelector(
 		(state: State) => state.settings.customers.fields
 	);
@@ -64,6 +67,10 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
 	const handleSaveCustomer = (event: React.SyntheticEvent) => {
 		event.preventDefault();
 		console.log(customerData);
+		dispatch({
+			type: watcherTypes.WATCH_CREATE_CUSTOMER,
+			payload: { customerData },
+		});
 	};
 	return (
 		<Styled.Wrapper>
