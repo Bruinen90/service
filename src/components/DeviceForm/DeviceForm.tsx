@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import * as actionTypes from '../../store/actions/actionTypes';
 import {
 	Checkbox,
 	InputLabel,
@@ -22,9 +23,13 @@ interface DeviceFormProps {
 }
 
 const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
+	const dispatch = useDispatch();
+
 	const deviceFields = useSelector(
 		(state: State) => state.settings.devices.fields
 	);
+
+	const deviceData = useSelector((state: State) => state.newRepair.device);
 
 	interface DeviceFields {
 		[key: string]: string | number | boolean;
@@ -46,28 +51,19 @@ const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
 		}
 		defaults[removeSpaces(field.name)] = value;
 	});
-	const [deviceData, setDeviceData] = useState(defaults);
+	// const [deviceData, setDeviceData] = useState(defaults);
 
-	const handleCheckboxChange = (
-		event: React.ChangeEvent<HTMLInputElement>
+	const handleUpdateDeviceData = (
+		event: React.ChangeEvent<HTMLInputElement> | any
 	) => {
 		const input = event.target;
-		setDeviceData(prev => ({
-			...prev,
-			[input.name]: input.checked,
-		}));
-	};
-
-	const handleChangeTextField = (
-		event: React.ChangeEvent<HTMLInputElement>
-	) => {
-		const input = event.target;
-		setDeviceData(prev => ({ ...prev, [input.name]: input.value }));
-	};
-
-	const handleChangeRadioField = (event: any) => {
-		const input = event.target;
-		setDeviceData(prev => ({ ...prev, [input.name]: input.value }));
+		dispatch({
+			type: actionTypes.SET_DEVICE_DATA,
+			payload: {
+				[input.name]:
+					input.type === 'checkbox' ? input.checked : input.value,
+			},
+		});
 	};
 
 	const handleAddDevice = () => {
@@ -78,14 +74,16 @@ const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
 			<form onSubmit={handleAddDevice}>
 				<FormGroup>
 					{deviceFields.map(field => {
+						const fieldNameNormalized = removeSpaces(field.name);
 						switch (field.type) {
 							case 'text':
 								return (
 									<TextField
-										name={removeSpaces(field.name)}
+										name={fieldNameNormalized}
 										label={field.name}
 										key={field._id}
-										onChange={handleChangeTextField}
+										onChange={handleUpdateDeviceData}
+										value={deviceData[fieldNameNormalized]}
 									/>
 								);
 							case 'checkbox':
@@ -96,11 +94,13 @@ const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
 											<Checkbox
 												checked={
 													deviceData[
-														field._id
+														fieldNameNormalized
 													] as boolean
 												}
-												onChange={handleCheckboxChange}
-												name={removeSpaces(field.name)}
+												onChange={
+													handleUpdateDeviceData
+												}
+												name={fieldNameNormalized}
 											/>
 										}
 										label={field.name}
@@ -116,9 +116,12 @@ const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
 											labelId={field._id + '_label'}
 											id={field._id}
 											label={field.name}
-											onChange={handleChangeRadioField}
-											name={removeSpaces(field.name)}
+											onChange={handleUpdateDeviceData}
+											name={fieldNameNormalized}
 											defaultValue={field.radios![0]}
+											value={
+												deviceData[fieldNameNormalized]
+											}
 										>
 											{field.radios!.map(option => (
 												<MenuItem

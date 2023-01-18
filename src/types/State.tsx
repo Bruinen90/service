@@ -1,5 +1,6 @@
 import { Field } from './Settings';
 import { ICustomer } from './Customer';
+import { Device } from './Device';
 export interface State {
 	company: Company;
 	settings: Settings;
@@ -82,4 +83,6 @@ export interface Loaders {
 
 export interface NewRepair {
 	customer: ICustomer;
+	device: Device;
+	problem: Device;
 }

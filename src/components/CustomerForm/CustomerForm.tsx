@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as watcherTypes from '../../store/sagas/watcherTypes';
+import * as actionTypes from '../../store/actions/actionTypes';
 import { removeSpaces } from '../../common/functions';
 
 //Styles
@@ -25,6 +26,11 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ goToNextStep }) => {
 	const customerFields = useSelector(
 		(state: State) => state.settings.customers.fields
 	);
+
+	const customerData = useSelector(
+		(state: State) => state.newRepair.customer
+	);
+
 	interface CustomerFields {
 		phoneNumber: string;
 		[key: string]: string | number | boolean;
@@ -47,23 +53,18 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ goToNextStep }) => {
 		}
 		defaults[removeSpaces(field.name)] = value;
 	});
-	const [customerData, setCustomerData] = useState(defaults);
 
-	const handleCheckboxChange = (
-		event: React.ChangeEvent<HTMLInputElement>
+	const handleUpdateCustomerData = (
+		event: React.ChangeEvent<HTMLInputElement> | any
 	) => {
 		const input = event.target;
-		setCustomerData(prev => ({
-			...prev,
-			[removeSpaces(input.name)]: input.checked,
-		}));
-	};
-
-	const handleChangeTextField = (
-		event: React.ChangeEvent<HTMLInputElement>
-	) => {
-		const input = event.target;
-		setCustomerData(prev => ({ ...prev, [input.name]: input.value }));
+		dispatch({
+			type: actionTypes.SET_CUSTOMER_DATA,
+			payload: {
+				[input.name]:
+					input.type === 'checkbox' ? input.checked : input.value,
+			},
+		});
 	};
 
 	const handleSaveCustomer = (event: React.SyntheticEvent) => {
@@ -79,14 +80,16 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ goToNextStep }) => {
 			<form onSubmit={handleSaveCustomer}>
 				<FormGroup>
 					{customerFields.map(field => {
+						const fieldNameNoSpaces = removeSpaces(field.name);
 						switch (field.type) {
 							case 'text':
 								return (
 									<TextField
-										name={removeSpaces(field.name)}
+										name={fieldNameNoSpaces}
 										label={field.name}
 										key={field._id}
-										onChange={handleChangeTextField}
+										onChange={handleUpdateCustomerData}
+										value={customerData[fieldNameNoSpaces]}
 									/>
 								);
 							case 'checkbox':
@@ -97,11 +100,13 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ goToNextStep }) => {
 											<Checkbox
 												checked={
 													customerData[
-														field._id
+														fieldNameNoSpaces
 													] as boolean
 												}
-												onChange={handleCheckboxChange}
-												name={removeSpaces(field.name)}
+												onChange={
+													handleUpdateCustomerData
+												}
+												name={fieldNameNoSpaces}
 											/>
 										}
 										label={field.name}
@@ -113,7 +118,8 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ goToNextStep }) => {
 						name='phoneNumber'
 						label='Numer telefonu'
 						key='phoneNumber'
-						onChange={handleChangeTextField}
+						onChange={handleUpdateCustomerData}
+						value={customerData.phoneNumber}
 					/>
 					<Button type='submit'>Zapisz</Button>
 				</FormGroup>

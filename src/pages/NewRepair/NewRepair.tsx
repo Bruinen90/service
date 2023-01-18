@@ -13,6 +13,7 @@ import NewRepairStepper from '../../components/NewRepairStepper/NewRepairStepper
 //Types
 import { NewRepairTab, TabsArr } from '../../types/Repair';
 import DeviceForm from '../../components/DeviceForm/DeviceForm';
+import ProblemForm from '../../components/ProblemForm/ProblemForm';
 
 interface NewRepairProps {}
 
@@ -60,6 +61,7 @@ const NewRepair: React.FC<NewRepairProps> = () => {
 			tabToShow = <DeviceForm goToNextStep={goToNextStep} />;
 			break;
 		case 2:
+			tabToShow = <ProblemForm goToNextStep={goToNextStep} />;
 			break;
 		case 3:
 			break;
