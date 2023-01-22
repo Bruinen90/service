@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeSpaces } from '../../common/functions';
+import * as actionTypes from '../../store/actions/actionTypes';
 
 // MUI
 import { Typography } from '@mui/material';
@@ -9,11 +12,13 @@ import CustomerForm from '../../components/CustomerForm/CustomerForm';
 
 // Components
 import NewRepairStepper from '../../components/NewRepairStepper/NewRepairStepper';
+import ProblemForm from '../../components/ProblemForm/ProblemForm';
+import DeviceForm from '../../components/DeviceForm/DeviceForm';
 
 //Types
-import { NewRepairTab, TabsArr } from '../../types/Repair';
-import DeviceForm from '../../components/DeviceForm/DeviceForm';
-import ProblemForm from '../../components/ProblemForm/ProblemForm';
+import { TabsArr } from '../../types/Repair';
+import { State, NewRepair as NewRepairState } from '../../types/State';
+import { Field } from '../../types/Settings';
 
 interface NewRepairProps {}
 

@@ -89,7 +89,10 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ goToNextStep }) => {
 										label={field.name}
 										key={field._id}
 										onChange={handleUpdateCustomerData}
-										value={customerData[fieldNameNoSpaces]}
+										value={
+											customerData[fieldNameNoSpaces] ||
+											''
+										}
 									/>
 								);
 							case 'checkbox':
@@ -99,9 +102,9 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ goToNextStep }) => {
 										control={
 											<Checkbox
 												checked={
-													customerData[
+													(customerData[
 														fieldNameNoSpaces
-													] as boolean
+													] as boolean) || false
 												}
 												onChange={
 													handleUpdateCustomerData

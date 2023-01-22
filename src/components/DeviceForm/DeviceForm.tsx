@@ -83,7 +83,10 @@ const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
 										label={field.name}
 										key={field._id}
 										onChange={handleUpdateDeviceData}
-										value={deviceData[fieldNameNormalized]}
+										value={
+											deviceData[fieldNameNormalized] ||
+											''
+										}
 									/>
 								);
 							case 'checkbox':
@@ -93,9 +96,9 @@ const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
 										control={
 											<Checkbox
 												checked={
-													deviceData[
+													(deviceData[
 														fieldNameNormalized
-													] as boolean
+													] as boolean) || false
 												}
 												onChange={
 													handleUpdateDeviceData
@@ -118,9 +121,10 @@ const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
 											label={field.name}
 											onChange={handleUpdateDeviceData}
 											name={fieldNameNormalized}
-											defaultValue={field.radios![0]}
 											value={
-												deviceData[fieldNameNormalized]
+												deviceData[
+													fieldNameNormalized
+												] || field.radios![0]
 											}
 										>
 											{field.radios!.map(option => (

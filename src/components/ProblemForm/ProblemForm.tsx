@@ -18,6 +18,7 @@ import {
 	Select,
 	MenuItem,
 } from '@mui/material';
+import InputWrapper from '../InputWrapper/InputWrapper';
 
 //Types
 interface ProblemFormProps {
@@ -86,65 +87,74 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 						switch (field.type) {
 							case 'text':
 								return (
-									<TextField
-										name={fieldNameNoSpaces}
-										label={field.name}
-										key={field._id}
-										onChange={handleUpdateProblemData}
-										value={
-											problemData[fieldNameNoSpaces] || ''
-										}
-									/>
+									<InputWrapper key={field._id}>
+										<TextField
+											name={fieldNameNoSpaces}
+											label={field.name}
+											onChange={handleUpdateProblemData}
+											value={
+												problemData[
+													fieldNameNoSpaces
+												] || ''
+											}
+										/>
+									</InputWrapper>
 								);
 							case 'checkbox':
 								return (
-									<FormControlLabel
-										key={field._id}
-										control={
-											<Checkbox
-												checked={
-													problemData[
-														fieldNameNoSpaces
-													] as boolean
-												}
+									<InputWrapper key={field._id}>
+										<FormControlLabel
+											control={
+												<Checkbox
+													checked={
+														(problemData[
+															fieldNameNoSpaces
+														] as boolean) || false
+													}
+													onChange={
+														handleUpdateProblemData
+													}
+													name={fieldNameNoSpaces}
+												/>
+											}
+											label={field.name}
+										/>
+									</InputWrapper>
+								);
+							case 'radio':
+								return (
+									<InputWrapper key={field._id}>
+										<FormControl>
+											<InputLabel
+												id={field._id + '_label'}
+											>
+												{field.name}
+											</InputLabel>
+											<Select
+												labelId={field._id + '_label'}
+												id={field._id}
+												label={field.name}
 												onChange={
 													handleUpdateProblemData
 												}
 												name={fieldNameNoSpaces}
-											/>
-										}
-										label={field.name}
-									/>
-								);
-							case 'radio':
-								return (
-									<FormControl key={field._id}>
-										<InputLabel id={field._id + '_label'}>
-											{field.name}
-										</InputLabel>
-										<Select
-											labelId={field._id + '_label'}
-											id={field._id}
-											label={field.name}
-											onChange={handleUpdateProblemData}
-											name={fieldNameNoSpaces}
-											defaultValue={field.radios![0]}
-											value={
-												problemData[
-													fieldNameNoSpaces
-												] || field.radios![0]
-											}
-										>
-											{field.radios!.map(option => (
-												<MenuItem
-													key={option}
-													value={option}
-												>
-													{option}
-												</MenuItem>
-											))}
-										</Select>
-									</FormControl>
+												value={
+													problemData[
+														fieldNameNoSpaces
+													] || field.radios![0]
+												}
+											>
+												{field.radios!.map(option => (
+													<MenuItem
+														key={option}
+														value={option}
+													>
+														{option}
+													</MenuItem>
+												))}
+											</Select>
+										</FormControl>
+									</InputWrapper>
 								);
 						}
 					})}
