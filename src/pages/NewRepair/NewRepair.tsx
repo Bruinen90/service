@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { removeSpaces } from '../../common/functions';
-import * as actionTypes from '../../store/actions/actionTypes';
+import React, { useState } from 'react';
 
 // MUI
 import { Typography } from '@mui/material';
@@ -17,8 +14,7 @@ import DeviceForm from '../../components/DeviceForm/DeviceForm';
 
 //Types
 import { TabsArr } from '../../types/Repair';
-import { State, NewRepair as NewRepairState } from '../../types/State';
-import { Field } from '../../types/Settings';
+import NewRepairSummary from '../../components/NewRepairSummary/NewRepairSummary';
 
 interface NewRepairProps {}
 
@@ -69,6 +65,7 @@ const NewRepair: React.FC<NewRepairProps> = () => {
 			tabToShow = <ProblemForm goToNextStep={goToNextStep} />;
 			break;
 		case 3:
+			tabToShow = <NewRepairSummary goToNextStep={goToNextStep} />;
 			break;
 		default:
 			throw new Error(
