@@ -10,8 +10,12 @@ import {
 	FormControlLabel,
 	FormGroup,
 	TextField,
+	Button,
 } from '@mui/material';
 import { removeSpaces } from '../../common/functions';
+
+// Components
+import InputWrapper from '../InputWrapper/InputWrapper';
 
 //Styles
 import * as Styled from './stylesDeviceForm';
@@ -51,7 +55,6 @@ const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
 		}
 		defaults[removeSpaces(field.name)] = value;
 	});
-	// const [deviceData, setDeviceData] = useState(defaults);
 
 	const handleUpdateDeviceData = (
 		event: React.ChangeEvent<HTMLInputElement> | any
@@ -66,82 +69,97 @@ const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
 		});
 	};
 
-	const handleAddDevice = () => {
-		goToNextStep();
-	};
 	return (
 		<Styled.Wrapper>
-			<form onSubmit={handleAddDevice}>
+			<form>
 				<FormGroup>
-					{deviceFields.map(field => {
+					{deviceFields.map((field, inputIndex) => {
 						const fieldNameNormalized = removeSpaces(field.name);
 						switch (field.type) {
 							case 'text':
 								return (
-									<TextField
-										name={fieldNameNormalized}
-										label={field.name}
-										key={field._id}
-										onChange={handleUpdateDeviceData}
-										value={
-											deviceData[fieldNameNormalized] ||
-											''
-										}
-									/>
+									<InputWrapper key={field._id}>
+										<TextField
+											name={fieldNameNormalized}
+											label={field.name}
+											key={field._id}
+											onChange={handleUpdateDeviceData}
+											value={
+												deviceData[
+													fieldNameNormalized
+												] || ''
+											}
+											autoFocus={inputIndex === 0}
+										/>
+									</InputWrapper>
 								);
 							case 'checkbox':
 								return (
-									<FormControlLabel
-										key={field._id}
-										control={
-											<Checkbox
-												checked={
-													(deviceData[
-														fieldNameNormalized
-													] as boolean) || false
-												}
+									<InputWrapper key={field._id}>
+										<FormControlLabel
+											key={field._id}
+											control={
+												<Checkbox
+													autoFocus={inputIndex === 0}
+													checked={
+														(deviceData[
+															fieldNameNormalized
+														] as boolean) || false
+													}
+													onChange={
+														handleUpdateDeviceData
+													}
+													name={fieldNameNormalized}
+												/>
+											}
+											label={field.name}
+										/>
+									</InputWrapper>
+								);
+							case 'radio':
+								return (
+									<InputWrapper key={field._id}>
+										<FormControl key={field._id}>
+											<InputLabel
+												id={field._id + '_label'}
+											>
+												{field.name}
+											</InputLabel>
+											<Select
+												autoFocus={inputIndex === 0}
+												labelId={field._id + '_label'}
+												id={field._id}
+												label={field.name}
 												onChange={
 													handleUpdateDeviceData
 												}
 												name={fieldNameNormalized}
-											/>
-										}
-										label={field.name}
-									/>
-								);
-							case 'radio':
-								return (
-									<FormControl key={field._id}>
-										<InputLabel id={field._id + '_label'}>
-											{field.name}
-										</InputLabel>
-										<Select
-											labelId={field._id + '_label'}
-											id={field._id}
-											label={field.name}
-											onChange={handleUpdateDeviceData}
-											name={fieldNameNormalized}
-											value={
-												deviceData[
-													fieldNameNormalized
-												] || field.radios![0]
-											}
-										>
-											{field.radios!.map(option => (
-												<MenuItem
-													key={option}
-													value={option}
-												>
-													{option}
-												</MenuItem>
-											))}
-										</Select>
-									</FormControl>
+												value={
+													deviceData[
+														fieldNameNormalized
+													] || field.radios![0]
+												}
+											>
+												{field.radios!.map(option => (
+													<MenuItem
+														key={option}
+														value={option}
+													>
+														{option}
+													</MenuItem>
+												))}
+											</Select>
+										</FormControl>
+									</InputWrapper>
 								);
 						}
 					})}
 				</FormGroup>
 			</form>
+			<Button variant='outlined'>Dodaj tylko klienta</Button>
+			<Button variant='contained' onClick={goToNextStep}>
+				Dalej
+			</Button>
 		</Styled.Wrapper>
 	);
 };

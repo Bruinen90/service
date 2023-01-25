@@ -70,25 +70,18 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 		});
 	};
 
-	const handleSaveCustomer = (event: React.SyntheticEvent) => {
-		// event.preventDefault();
-		// dispatch({
-		// 	type: watcherTypes.WATCH_CREATE_CUSTOMER,
-		// 	payload: { customerData },
-		// });
-		// goToNextStep();
-	};
 	return (
 		<Styled.Wrapper>
-			<form onSubmit={handleSaveCustomer}>
+			<form>
 				<FormGroup>
-					{problemFields.map(field => {
+					{problemFields.map((field, inputIndex) => {
 						const fieldNameNoSpaces = removeSpaces(field.name);
 						switch (field.type) {
 							case 'text':
 								return (
 									<InputWrapper key={field._id}>
 										<TextField
+											autoFocus={inputIndex === 0}
 											name={fieldNameNoSpaces}
 											label={field.name}
 											onChange={handleUpdateProblemData}
@@ -106,6 +99,7 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 										<FormControlLabel
 											control={
 												<Checkbox
+													autoFocus={inputIndex === 0}
 													checked={
 														(problemData[
 															fieldNameNoSpaces
@@ -131,6 +125,7 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 												{field.name}
 											</InputLabel>
 											<Select
+												autoFocus={inputIndex === 0}
 												labelId={field._id + '_label'}
 												id={field._id}
 												label={field.name}
@@ -161,6 +156,10 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 					<Button type='submit'>Zapisz</Button>
 				</FormGroup>
 			</form>
+			<Button variant='outlined'>Dodaj tylko klienta</Button>
+			<Button variant='contained' onClick={goToNextStep}>
+				Dalej
+			</Button>
 		</Styled.Wrapper>
 	);
 };

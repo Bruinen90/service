@@ -24,7 +24,9 @@ const NewRepairSummary: React.FC<NewRepairSummaryProps> = () => {
 	};
 	return (
 		<Styled.Wrapper>
-			<Button onClick={handleSubmitNewRepair}>Zapisz</Button>
+			<Button onClick={handleSubmitNewRepair} variant='contained'>
+				Zapisz naprawę
+			</Button>
 		</Styled.Wrapper>
 	);
 };

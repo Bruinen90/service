@@ -30,6 +30,7 @@ const SideDrawer: React.FC<DrawerProps> = () => {
 							width: Styled.DRAWER_WIDTH,
 							padding: '1rem',
 							height: '100%',
+							background: 'transparent',
 						},
 					}}
 				>

@@ -14,6 +14,7 @@ import {
 	FormGroup,
 	Button,
 } from '@mui/material';
+import InputWrapper from '../InputWrapper/InputWrapper';
 
 //Types
 interface CustomerFormProps {
@@ -73,60 +74,73 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ goToNextStep }) => {
 			type: watcherTypes.WATCH_CREATE_CUSTOMER,
 			payload: { customerData },
 		});
-		goToNextStep();
 	};
 	return (
 		<Styled.Wrapper>
 			<form onSubmit={handleSaveCustomer}>
 				<FormGroup>
-					{customerFields.map(field => {
+					{customerFields.map((field, inputIndex) => {
 						const fieldNameNoSpaces = removeSpaces(field.name);
 						switch (field.type) {
 							case 'text':
 								return (
-									<TextField
-										name={fieldNameNoSpaces}
-										label={field.name}
-										key={field._id}
-										onChange={handleUpdateCustomerData}
-										value={
-											customerData[fieldNameNoSpaces] ||
-											''
-										}
-									/>
+									<InputWrapper key={field._id}>
+										<TextField
+											autoFocus={inputIndex === 0}
+											name={fieldNameNoSpaces}
+											label={field.name}
+											key={field._id}
+											onChange={handleUpdateCustomerData}
+											value={
+												customerData[
+													fieldNameNoSpaces
+												] || ''
+											}
+										/>
+									</InputWrapper>
 								);
 							case 'checkbox':
 								return (
-									<FormControlLabel
-										key={field._id}
-										control={
-											<Checkbox
-												checked={
-													(customerData[
-														fieldNameNoSpaces
-													] as boolean) || false
-												}
-												onChange={
-													handleUpdateCustomerData
-												}
-												name={fieldNameNoSpaces}
-											/>
-										}
-										label={field.name}
-									/>
+									<InputWrapper key={field._id}>
+										<FormControlLabel
+											key={field._id}
+											control={
+												<Checkbox
+													autoFocus={inputIndex === 0}
+													checked={
+														(customerData[
+															fieldNameNoSpaces
+														] as boolean) || false
+													}
+													onChange={
+														handleUpdateCustomerData
+													}
+													name={fieldNameNoSpaces}
+												/>
+											}
+											label={field.name}
+										/>
+									</InputWrapper>
 								);
 						}
 					})}
-					<TextField
-						name='phoneNumber'
-						label='Numer telefonu'
-						key='phoneNumber'
-						onChange={handleUpdateCustomerData}
-						value={customerData.phoneNumber}
-					/>
-					<Button type='submit'>Zapisz</Button>
+					<InputWrapper>
+						<TextField
+							name='phoneNumber'
+							label='Numer telefonu'
+							key='phoneNumber'
+							onChange={handleUpdateCustomerData}
+							value={customerData.phoneNumber}
+						/>
+					</InputWrapper>
 				</FormGroup>
 			</form>
+			<Button variant='outlined' onClick={handleSaveCustomer}>
+				Dodaj tylko klienta
+			</Button>
+			<Button variant='contained' onClick={goToNextStep}>
+				Dalej
+			</Button>
 		</Styled.Wrapper>
 	);
 };

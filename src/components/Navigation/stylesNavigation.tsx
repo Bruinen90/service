@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export const Wrapper = styled('nav')(({ theme }) => ({
-	height: '95%',
+	height: '99%',
 }));
 
 export const Menu = styled('div')({
