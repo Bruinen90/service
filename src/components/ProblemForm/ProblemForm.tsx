@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as watcherTypes from '../../store/sagas/watcherTypes';
 import * as actionTypes from '../../store/actions/actionTypes';
 import { removeSpaces } from '../../common/functions';
 
@@ -56,6 +55,16 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 		}
 		defaults[removeSpaces(field.name)] = value;
 	});
+
+	useEffect(() => {
+		Object.entries(defaults).forEach(field => {
+			const [name, value] = field;
+			dispatch({
+				type: actionTypes.SET_PROBLEM_DATA,
+				payload: { [name]: value },
+			});
+		});
+	}, []);
 
 	const handleUpdateProblemData = (
 		event: React.ChangeEvent<HTMLInputElement> | any

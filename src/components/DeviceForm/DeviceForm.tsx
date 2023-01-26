@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from '../../store/actions/actionTypes';
 import {
@@ -55,6 +55,16 @@ const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
 		}
 		defaults[removeSpaces(field.name)] = value;
 	});
+
+	useEffect(() => {
+		Object.entries(defaults).forEach(field => {
+			const [name, value] = field;
+			dispatch({
+				type: actionTypes.SET_DEVICE_DATA,
+				payload: { [name]: value },
+			});
+		});
+	}, []);
 
 	const handleUpdateDeviceData = (
 		event: React.ChangeEvent<HTMLInputElement> | any
