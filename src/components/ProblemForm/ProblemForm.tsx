@@ -33,13 +33,10 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 
 	const problemData = useSelector((state: State) => state.newRepair.problem);
 
-	interface CustomerFields {
-		phoneNumber: string;
+	interface ProblemFields {
 		[key: string]: string | number | boolean;
 	}
-	const defaults: CustomerFields = {
-		phoneNumber: '',
-	};
+	const defaults: ProblemFields = {};
 	problemFields.forEach(field => {
 		let value;
 		switch (field.type) {
@@ -59,10 +56,14 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 	useEffect(() => {
 		Object.entries(defaults).forEach(field => {
 			const [name, value] = field;
-			dispatch({
-				type: actionTypes.SET_PROBLEM_DATA,
-				payload: { [name]: value },
-			});
+			if (problemData[name] === undefined) {
+				dispatch({
+					type: actionTypes.SET_PROBLEM_DATA,
+					payload: {
+						[name]: value,
+					},
+				});
+			}
 		});
 	}, []);
 

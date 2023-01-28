@@ -7,6 +7,7 @@ export interface Field {
 	name: string;
 	type: FieldType;
 	radios?: string[];
+	required?: boolean;
 }
 
 export interface FetchedField extends Field {

@@ -58,10 +58,12 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ goToNextStep }) => {
 	useEffect(() => {
 		Object.entries(defaults).forEach(field => {
 			const [name, value] = field;
-			dispatch({
-				type: actionTypes.SET_CUSTOMER_DATA,
-				payload: { [name]: value },
-			});
+			if (customerData[name] === undefined) {
+				dispatch({
+					type: actionTypes.SET_CUSTOMER_DATA,
+					payload: { [name]: value },
+				});
+			}
 		});
 	}, []);
 

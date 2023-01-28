@@ -15,10 +15,12 @@ import {
 	CardActions,
 	CardContent,
 	TextField,
+    Checkbox
 } from '@mui/material';
 
 // Types
 import { FieldType } from '../../types/Settings';
+import InputWrapper from '../InputWrapper/InputWrapper';
 interface SettingsInEditProps {
 	name?: string;
 	type?: FieldType;
@@ -38,6 +40,7 @@ interface FormInterface {
 		touched: boolean;
 	};
 	radios?: string[];
+    required?: boolean;
 }
 
 const SettingsInEdit: React.FC<SettingsInEditProps> = ({
@@ -58,6 +61,7 @@ const SettingsInEdit: React.FC<SettingsInEditProps> = ({
 			touched: false,
 		},
 		radios: [''],
+        required: false,
 	});
 
 	const handleUpdateForm = (event: React.ChangeEvent) => {
@@ -125,16 +129,24 @@ const SettingsInEdit: React.FC<SettingsInEditProps> = ({
 		});
 	};
 
+    const handleSetRequired = (event: React.ChangeEvent) => {
+        setFormData({...formData, required: !formData.required});
+    }
+
 	const handleSubmit = () => {
-		const { name, type, radios } = formData;
+		const { name, type, radios, required } = formData;
 		const dataToSend = {
 			name: name.value,
 			type: type.value,
 			radios: radios?.filter(radio => radio !== ''), //Remove empty fields
+            required
 		};
 		if (dataToSend.radios?.length === 0) {
 			delete dataToSend.radios;
 		}
+        if (dataToSend.type !== 'text') {
+            delete dataToSend.required;
+        }
 		clickedSave(dataToSend);
 	};
 	return (
@@ -218,6 +230,18 @@ const SettingsInEdit: React.FC<SettingsInEditProps> = ({
 							))}
 						</>
 					)}
+                    {formData.type.value === 'text' &&
+                    <InputWrapper>
+                        <FormControlLabel 
+                            control={
+                                <Checkbox 
+                                    checked={formData.required} 
+                                    onChange={handleSetRequired} 
+                                    name={'required'}
+                                />} 
+                            label={'Pole obowiązkowe?'}
+                        />
+                    </InputWrapper>}
 				</CardContent>
 				<CardActions>
 					<Button variant='contained' color='primary' type='submit'>

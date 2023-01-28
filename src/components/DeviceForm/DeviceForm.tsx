@@ -59,10 +59,12 @@ const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
 	useEffect(() => {
 		Object.entries(defaults).forEach(field => {
 			const [name, value] = field;
-			dispatch({
-				type: actionTypes.SET_DEVICE_DATA,
-				payload: { [name]: value },
-			});
+			if (deviceData[name] === undefined) {
+				dispatch({
+					type: actionTypes.SET_DEVICE_DATA,
+					payload: { [name]: value },
+				});
+			}
 		});
 	}, []);
 

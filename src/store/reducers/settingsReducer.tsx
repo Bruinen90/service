@@ -9,7 +9,10 @@ import {
 } from '../../types/State';
 import { Field } from '../../types/Settings';
 
-export default (state: Settings = DEFAULT_SETTINGS, action: Action) => {
+const settingsReducer = (
+	state: Settings = DEFAULT_SETTINGS,
+	action: Action
+) => {
 	switch (action.type) {
 		case actionTypes.CREATE_SETTING_FIELD:
 			const settingsCategoryToAdd = action.payload
@@ -58,3 +61,5 @@ export default (state: Settings = DEFAULT_SETTINGS, action: Action) => {
 			return { ...state };
 	}
 };
+
+export default settingsReducer;
