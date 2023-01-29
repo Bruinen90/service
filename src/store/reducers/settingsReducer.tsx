@@ -39,7 +39,23 @@ const settingsReducer = (
 				},
 			};
 		case actionTypes.UPDATE_SETTING_FIELD:
-			return { ...state };
+			const { _id } = action.payload.data;
+			const settingsCategoryToUpdate = action.payload
+				.category as SettingsCategories;
+			const fieldsToUpdate = { ...state }[
+				settingsCategoryToUpdate
+			].fields.map(field => {
+				if (field._id && field._id === _id) {
+					return { ...action.payload.data };
+				} else {
+					return field;
+				}
+			});
+			// return { ...state };
+			return {
+				...state,
+				[settingsCategoryToUpdate]: { fields: fieldsToUpdate },
+			};
 		case actionTypes.SET_SETTINGS_FIELDS:
 			const { customers, devices, repairs } = action.payload;
 			return {

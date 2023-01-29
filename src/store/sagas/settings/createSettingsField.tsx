@@ -21,13 +21,23 @@ export function* createSettingsField(action: {
 			...data,
 			category,
 		});
-		yield put({
-			type: actionTypes.CREATE_SETTING_FIELD,
-			payload: {
-				category,
-				data: { ...data, _id: response.data._id },
-			},
-		});
+		if (data._id) {
+			yield put({
+				type: actionTypes.UPDATE_SETTING_FIELD,
+				payload: {
+					category,
+					data,
+				},
+			});
+		} else {
+			yield put({
+				type: actionTypes.CREATE_SETTING_FIELD,
+				payload: {
+					category,
+					data: { ...data, _id: response.data._id },
+				},
+			});
+		}
 	} catch (err) {
 		console.log(err);
 	}

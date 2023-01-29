@@ -22,6 +22,7 @@ import {
 import { FieldType } from '../../types/Settings';
 import InputWrapper from '../InputWrapper/InputWrapper';
 interface SettingsInEditProps {
+    _id?: string;
 	name?: string;
 	type?: FieldType;
 	clickedCancel: () => void;
@@ -44,6 +45,7 @@ interface FormInterface {
 }
 
 const SettingsInEdit: React.FC<SettingsInEditProps> = ({
+    _id,
 	name,
 	type,
 	clickedSave,
@@ -136,6 +138,7 @@ const SettingsInEdit: React.FC<SettingsInEditProps> = ({
 	const handleSubmit = () => {
 		const { name, type, radios, required } = formData;
 		const dataToSend = {
+            _id: _id,
 			name: name.value,
 			type: type.value,
 			radios: radios?.filter(radio => radio !== ''), //Remove empty fields

@@ -39,6 +39,7 @@ const SettingsField: React.FC<SettingsFieldProps> = ({
 	};
 
 	const handleClickSave = (data: any) => {
+		// console.log(data);
 		dispatch(
 			actionCreators.createSettingsField({
 				settingsCategory: category,
@@ -52,7 +53,6 @@ const SettingsField: React.FC<SettingsFieldProps> = ({
 	};
 
 	const handleClickCancel = () => {
-		console.log('CANCELING EDIT');
 		if (doneEditing) {
 			doneEditing();
 		}
@@ -65,17 +65,13 @@ const SettingsField: React.FC<SettingsFieldProps> = ({
 			type: watcherTypes.WATCH_DELETE_SETTINGS_FIELD,
 			payload: { _id: _id, category: category },
 		});
-		// dispatch(
-		// 	actionCreators.deleteSettingsFiels({
-		// 		deleteId: _id,
-		// 		settingsCategory: category,
-		// 	})
-		// );
 	};
+
 	return (
 		<Styled.Wrapper>
 			{inEdit ? (
 				<SettingsInEdit
+					_id={_id}
 					name={name}
 					type={type}
 					clickedSave={handleClickSave}
