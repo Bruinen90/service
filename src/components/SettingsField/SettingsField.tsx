@@ -19,6 +19,7 @@ interface SettingsFieldProps {
 	type: FieldType;
 	category: SettingsCategories;
 	newField?: boolean;
+	required?: boolean;
 	doneEditing?: () => void;
 }
 
@@ -27,6 +28,7 @@ const SettingsField: React.FC<SettingsFieldProps> = ({
 	name,
 	type,
 	category,
+	required,
 	newField = false,
 	doneEditing,
 }) => {
@@ -67,6 +69,8 @@ const SettingsField: React.FC<SettingsFieldProps> = ({
 		});
 	};
 
+	console.log('REQUIRED', name, required);
+
 	return (
 		<Styled.Wrapper>
 			{inEdit ? (
@@ -74,6 +78,7 @@ const SettingsField: React.FC<SettingsFieldProps> = ({
 					_id={_id}
 					name={name}
 					type={type}
+					required={required}
 					clickedSave={handleClickSave}
 					clickedCancel={handleClickCancel}
 				/>

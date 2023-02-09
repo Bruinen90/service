@@ -17,7 +17,6 @@ export function* fetchSettingsFields() {
 		try {
 			const response = yield axios.get('settings/all-fields');
 			if (response.data) {
-				console.log(response.data);
 				const settingsFields = response.data
 					.allSettingsFields as FetchedField[];
 				const categorizedFields: CategorizedFields = {

@@ -108,6 +108,7 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ goToNextStep }) => {
 													fieldNameNoSpaces
 												] || ''
 											}
+											required={field.required}
 										/>
 									</InputWrapper>
 								);

@@ -58,6 +58,7 @@ const SettingsFieldsEditor: React.FC<SettingsFieldsEditorProps> = ({
 					name={field.name}
 					type={field.type}
 					category={category}
+					required={field.required}
 				/>
 			))}
 		</Styled.Wrapper>

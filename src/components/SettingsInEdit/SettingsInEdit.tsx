@@ -25,6 +25,7 @@ interface SettingsInEditProps {
     _id?: string;
 	name?: string;
 	type?: FieldType;
+    required?: boolean;
 	clickedCancel: () => void;
 	clickedSave: (dataCopy: any) => void;
 }
@@ -48,6 +49,7 @@ const SettingsInEdit: React.FC<SettingsInEditProps> = ({
     _id,
 	name,
 	type,
+    required,
 	clickedSave,
 	clickedCancel,
 }) => {
@@ -63,7 +65,7 @@ const SettingsInEdit: React.FC<SettingsInEditProps> = ({
 			touched: false,
 		},
 		radios: [''],
-        required: false,
+        required: required || false,
 	});
 
 	const handleUpdateForm = (event: React.ChangeEvent) => {
@@ -152,6 +154,8 @@ const SettingsInEdit: React.FC<SettingsInEditProps> = ({
         }
 		clickedSave(dataToSend);
 	};
+
+    console.log('FORMDAYA', formData)
 	return (
 		<Styled.Wrapper>
 			<form onSubmit={handleSubmit}>

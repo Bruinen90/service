@@ -4,3 +4,9 @@ export type TabsArr = Array<{
 	label: NewRepairTab;
 	description: String;
 }>;
+
+export type RepairStatus =
+	| 'new'
+	| 'waitingForParts'
+	| 'waitingForDecision'
+	| 'done';
