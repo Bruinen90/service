@@ -1,12 +1,13 @@
 import { Field } from './Settings';
 import { ICustomer } from './Customer';
 import { Device } from './Device';
-import { RepairStatus } from './Repair';
+import { FetchedRepair, RepairStatus } from './Repair';
 export interface State {
 	company: Company;
 	settings: Settings;
 	loading: Loaders;
 	newRepair: NewRepair;
+	repairs: FetchedRepair[];
 }
 
 export interface Action {
@@ -40,11 +41,13 @@ export const DEFAULT_SETTINGS: Settings = {
 				_id: 'name',
 				name: 'Imię',
 				type: 'text',
+				category: 'customers',
 			},
 			{
 				_id: 'surname',
 				name: 'Nazwisko',
 				type: 'text',
+				category: 'customers',
 			},
 		],
 	},
@@ -54,6 +57,7 @@ export const DEFAULT_SETTINGS: Settings = {
 				_id: 'price',
 				name: 'Cena',
 				type: 'text',
+				category: 'repairs',
 			},
 		],
 	},
@@ -63,6 +67,7 @@ export const DEFAULT_SETTINGS: Settings = {
 				_id: 'serial',
 				name: 'Numer seryjny',
 				type: 'text',
+				category: 'devices',
 			},
 		],
 	},

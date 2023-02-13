@@ -4,7 +4,7 @@ import axios from 'axios';
 import { withLoader } from '../helpers';
 
 // Types
-import { Field, FetchedField, FieldCategory } from '../../../types/Settings';
+import { Field } from '../../../types/Settings';
 
 interface CategorizedFields {
 	customers: Field[];
@@ -18,7 +18,7 @@ export function* fetchSettingsFields() {
 			const response = yield axios.get('settings/all-fields');
 			if (response.data) {
 				const settingsFields = response.data
-					.allSettingsFields as FetchedField[];
+					.allSettingsFields as Field[];
 				const categorizedFields: CategorizedFields = {
 					customers: settingsFields.filter(
 						fields => fields.category === 'customers'

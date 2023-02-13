@@ -10,3 +10,18 @@ export type RepairStatus =
 	| 'waitingForParts'
 	| 'waitingForDecision'
 	| 'done';
+
+export interface FetchedRepair {
+	repairData: { [key: string]: string | boolean | undefined };
+	customer: {
+		_id: string;
+		phoneNumer: string;
+		email?: string;
+		[key: string]: string | boolean | undefined;
+	};
+	device: {
+		_id: string;
+		[key: string]: any;
+	};
+	_id: string;
+}

@@ -8,8 +8,5 @@ export interface Field {
 	type: FieldType;
 	radios?: string[];
 	required?: boolean;
-}
-
-export interface FetchedField extends Field {
 	category: FieldCategory;
 }
