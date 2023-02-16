@@ -16,11 +16,12 @@ import { FetchedRepair } from '../../types/Repair';
 
 //Styles
 import * as Styled from './stylesRepairsList';
-import { Field } from '../../types/Settings';
-import RepairsListDisplaySettings from '../RepairsListDisplaySettings/RepairsListDisplaySettings';
+import { Field, FieldCategory } from '../../types/Settings';
+import { DataGrid } from '@mui/x-data-grid';
+import { GridColDef, GridRowsProp } from '@mui/x-data-grid/models';
 
 //Types
-interface OuputField extends Field {
+export interface OutputField extends Field {
 	readableName?: string;
 	hidden?: boolean;
 }
@@ -28,19 +29,13 @@ interface OuputField extends Field {
 interface RepairsListProps {
 	repairs: FetchedRepair[];
 	dataFields: {
-		customers: { fields: OuputField[] };
-		devices: { fields: OuputField[] };
-		repairs: { fields: OuputField[] };
+		customers: { fields: OutputField[] };
+		devices: { fields: OutputField[] };
+		repairs: { fields: OutputField[] };
 	};
 }
 
 type CategoryType = 'customer' | 'device' | 'repairData';
-
-interface FieldsList {
-	customers: OuputField[];
-	devices: OuputField[];
-	repairs: OuputField[];
-}
 
 const generateOutputCell = ({
 	repair,
@@ -48,7 +43,7 @@ const generateOutputCell = ({
 	subset,
 }: {
 	repair: FetchedRepair;
-	dataField: OuputField;
+	dataField: OutputField;
 	subset: CategoryType;
 }) => {
 	if (dataField.type === 'checkbox') {
@@ -61,178 +56,56 @@ const generateOutputCell = ({
 };
 
 const RepairsList: React.FC<RepairsListProps> = ({ repairs, dataFields }) => {
-	const [sortBy, setSortBy] = useState<{
-		category: CategoryType;
-		fieldName: string;
-	}>({ category: 'repairData', fieldName: 'number' });
-	const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+	const fields: OutputField[] = [
+		{
+			name: 'phoneNumber',
+			_id: 'phoneNumber',
+			type: 'text',
+			readableName: 'Numer telefonu',
+			category: 'customers',
+		},
+		{
+			name: 'number',
+			_id: 'number',
+			type: 'text',
+			readableName: 'Numer naprawy',
+			category: 'repairs',
+		},
+		...dataFields.devices.fields,
+		...dataFields.customers.fields,
+		...dataFields.repairs.fields,
+	];
 
-	const [fields, setFields] = useState<FieldsList>({
-		customers: [
-			{
-				name: 'phoneNumber',
-				_id: 'phoneNumber',
-				type: 'text',
-				readableName: 'Numer telefonu',
-				category: 'customers',
-			},
-			...dataFields.customers.fields,
-		],
-		devices: [...dataFields.devices.fields],
-		repairs: [
-			{
-				name: 'number',
-				_id: 'number',
-				type: 'text',
-				readableName: 'Number naprawy',
-				category: 'devices',
-			},
-			...dataFields.repairs.fields,
-		],
+	const mappedFields: GridColDef[] = fields.map(field => ({
+		field: removeSpaces(field.name),
+		headerName: field.readableName ? field.readableName : field.name,
+		width: 150,
+	}));
+
+	const mappedRepairs: GridRowsProp = repairs.map(repair => {
+		const row: { [key: string]: string } = { id: repair._id };
+		fields.forEach(field => {
+			const category: keyof FetchedRepair =
+				field.category === 'customers'
+					? 'customer'
+					: field.category === 'devices'
+					? 'device'
+					: 'repairData';
+			let value = repair[category][removeSpaces(field.name)];
+			if (value === undefined) {
+				value = repair[category][field.name];
+			}
+			row[removeSpaces(field.name)] = value;
+		});
+		return row;
 	});
 
-	const handleClickedSortBy = (event: React.MouseEvent<HTMLElement>) => {
-		const target = event.target as HTMLElement;
-		const fieldName = target.dataset.name!;
-		let categoryAsKey: CategoryType;
-		switch (target.dataset.category) {
-			case 'customers':
-				categoryAsKey = 'customer';
-				break;
-			case 'devices':
-				categoryAsKey = 'device';
-				break;
-			case 'repairs':
-				categoryAsKey = 'repairData';
-				break;
-			default:
-				throw new Error('Error during categorizing sorting field');
-		}
-
-		setSortBy({
-			category: categoryAsKey,
-			fieldName: removeSpaces(fieldName),
-		});
-		setSortOrder(prev => (prev === 'asc' ? 'desc' : 'asc'));
-
-		console.log(sortBy, sortOrder);
-	};
-
-	const handleToggleHideDatafield = ({
-		fieldId,
-		fieldCategory,
-		hidden,
-	}: {
-		fieldId: string;
-		fieldCategory: keyof FieldsList;
-		hidden: boolean;
-	}) => {
-		setFields(prev => ({
-			...prev,
-			[fieldCategory]: prev[fieldCategory].map(field =>
-				field._id === fieldId ? { ...field, hidden } : field
-			),
-		}));
-	};
+	// console.log(mappedFields, 'REPAIRS', mappedRepairs);
+	// console.log(repairs);
 
 	return (
-		<Styled.Wrapper>
-			<RepairsListDisplaySettings />
-			<Table stickyHeader>
-				<TableHead>
-					<TableRow>
-						<TableCell colSpan={fields.customers.length}>
-							Klient
-						</TableCell>
-						<TableCell colSpan={fields.devices.length}>
-							Urządzenie
-						</TableCell>
-						<TableCell colSpan={fields.devices.length}>
-							Naprawa
-						</TableCell>
-					</TableRow>
-					<TableRow>
-						{[
-							...fields.customers,
-							...fields.devices,
-							...fields.repairs,
-						]
-							.filter(dataField => !dataField.hidden)
-							.map(dataField => (
-								<TableCell
-									key={dataField._id}
-									sortDirection={
-										sortBy.fieldName ===
-										removeSpaces(dataField.name)
-											? sortOrder
-											: false
-									}
-								>
-									<TableSortLabel
-										active={
-											sortBy.fieldName ===
-											removeSpaces(dataField.name)
-										}
-										direction={sortOrder}
-										onClick={handleClickedSortBy}
-										data-name={dataField.name}
-										data-category={dataField.category}
-									>
-										{dataField.readableName
-											? dataField.readableName
-											: dataField.name}
-									</TableSortLabel>
-								</TableCell>
-							))}
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{repairs
-						.sort((repairA, repairB) => {
-							const sortingMultiplier =
-								sortOrder === 'asc' ? -1 : 1;
-							console.log(
-								repairA[sortBy.category][sortBy.fieldName] >
-									repairB[sortBy.category][sortBy.fieldName]
-							);
-							return repairA[sortBy.category][sortBy.fieldName] >
-								repairB[sortBy.category][sortBy.fieldName]
-								? -1 * sortingMultiplier
-								: 1 * sortingMultiplier;
-						})
-						.map(repair => (
-							<TableRow key={repair._id as string}>
-								{fields.customers.map(dataField => (
-									<TableCell key={dataField._id}>
-										{generateOutputCell({
-											repair,
-											dataField,
-											subset: 'customer',
-										})}
-									</TableCell>
-								))}
-								{fields.devices.map(dataField => (
-									<TableCell key={dataField._id}>
-										{generateOutputCell({
-											repair,
-											dataField,
-											subset: 'device',
-										})}
-									</TableCell>
-								))}
-								{fields.repairs.map(dataField => (
-									<TableCell key={dataField._id}>
-										{generateOutputCell({
-											repair,
-											dataField,
-											subset: 'repairData',
-										})}
-									</TableCell>
-								))}
-							</TableRow>
-						))}
-				</TableBody>
-			</Table>
+		<Styled.Wrapper style={{ height: '70vh', width: '70vw' }}>
+			<DataGrid rows={mappedRepairs} columns={mappedFields} />
 		</Styled.Wrapper>
 	);
 };
