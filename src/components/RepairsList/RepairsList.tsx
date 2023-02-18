@@ -1,15 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { removeSpaces } from '../../common/functions';
 
-// Mui
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableRow,
-	TableSortLabel,
-} from '@mui/material';
+// MuiX
+import { GridColDef, GridRowsProp } from '@mui/x-data-grid/models';
+import translations from './DataGridLocalization';
 
 // Types
 import { FetchedRepair } from '../../types/Repair';
@@ -17,8 +11,7 @@ import { FetchedRepair } from '../../types/Repair';
 //Styles
 import * as Styled from './stylesRepairsList';
 import { Field, FieldCategory } from '../../types/Settings';
-import { DataGrid } from '@mui/x-data-grid';
-import { GridColDef, GridRowsProp } from '@mui/x-data-grid/models';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 //Types
 export interface OutputField extends Field {
@@ -100,12 +93,19 @@ const RepairsList: React.FC<RepairsListProps> = ({ repairs, dataFields }) => {
 		return row;
 	});
 
-	// console.log(mappedFields, 'REPAIRS', mappedRepairs);
-	// console.log(repairs);
-
 	return (
-		<Styled.Wrapper style={{ height: '70vh', width: '70vw' }}>
-			<DataGrid rows={mappedRepairs} columns={mappedFields} />
+		<Styled.Wrapper
+			style={{ display: 'flex', height: '100%', width: '100%' }}
+		>
+			<div style={{ flexGrow: 1 }}>
+				<DataGrid
+					rows={mappedRepairs}
+					columns={mappedFields}
+					autoHeight
+					localeText={translations}
+					components={{ Toolbar: GridToolbar }}
+				/>
+			</div>
 		</Styled.Wrapper>
 	);
 };
