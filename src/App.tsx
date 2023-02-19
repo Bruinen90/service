@@ -29,6 +29,7 @@ const App: React.FC = () => {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		dispatch({ type: watcherTypes.WATCH_AUTO_LOGIN });
+		dispatch({ type: watcherTypes.WATCH_FETCH_ALL_SERVICEMEN });
 	}, [dispatch]);
 
 	const company = useSelector((state: State) => state.company);

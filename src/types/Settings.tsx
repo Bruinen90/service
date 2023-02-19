@@ -10,3 +10,13 @@ export interface Field {
 	required?: boolean;
 	category: FieldCategory;
 }
+
+export interface CreatedServiceman {
+	name: string;
+	email?: string;
+	phonenumber?: string;
+}
+
+export interface FetchedServiceman extends CreatedServiceman {
+	_id: string;
+}

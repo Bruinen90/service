@@ -1,4 +1,4 @@
-import { Field } from './Settings';
+import { FetchedServiceman, Field } from './Settings';
 import { ICustomer } from './Customer';
 import { Device } from './Device';
 import { FetchedRepair, RepairStatus } from './Repair';
@@ -23,6 +23,7 @@ export interface Company {
 export type SettingsCategories = 'repairs' | 'customers' | 'devices';
 
 export interface Settings {
+	servicemen: FetchedServiceman[];
 	customers: {
 		fields: Field[];
 	};
@@ -35,6 +36,7 @@ export interface Settings {
 }
 
 export const DEFAULT_SETTINGS: Settings = {
+	servicemen: [],
 	customers: {
 		fields: [
 			{

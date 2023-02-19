@@ -59,6 +59,7 @@ const settingsReducer = (
 		case actionTypes.SET_SETTINGS_FIELDS:
 			const { customers, devices, repairs } = action.payload;
 			return {
+				...state,
 				customers: {
 					...state.customers,
 					fields: customers,
@@ -72,7 +73,20 @@ const settingsReducer = (
 					fields: devices,
 				},
 			};
-
+		case actionTypes.ADD_NEW_SERVICEMAN:
+			if (state.servicemen && state.servicemen.length > 0) {
+				return {
+					...state,
+					servicemen: [...state.servicemen, action.payload],
+				};
+			} else {
+				return {
+					...state,
+					servicemen: [action.payload],
+				};
+			}
+		case actionTypes.SET_SERVICEMEN:
+			return { ...state, servicemen: action.payload };
 		default:
 			return { ...state };
 	}
