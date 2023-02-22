@@ -55,6 +55,7 @@ const ServicemanEditor: React.FC<ServicemanEditorProps> = () => {
 								inputName: 'name',
 							})
 						}
+						required
 					/>
 					<TextField
 						label='Adres email serwisanta'

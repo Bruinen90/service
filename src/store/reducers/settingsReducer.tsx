@@ -87,6 +87,24 @@ const settingsReducer = (
 			}
 		case actionTypes.SET_SERVICEMEN:
 			return { ...state, servicemen: action.payload };
+		case actionTypes.UPDATE_SERVICEMAN_DATA:
+			return {
+				...state,
+				servicemen: state.servicemen.map(serviceman => {
+					if (serviceman._id === action.payload._id) {
+						return action.payload;
+					} else {
+						return serviceman;
+					}
+				}),
+			};
+		case actionTypes.DELETE_SERVICEMAN:
+			return {
+				...state,
+				servicemen: state.servicemen.filter(
+					serviceman => serviceman._id !== action.payload
+				),
+			};
 		default:
 			return { ...state };
 	}

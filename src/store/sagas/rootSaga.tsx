@@ -11,6 +11,8 @@ import { newRepair } from './repairs/newRepair';
 import { getAllRepairs } from './repairs/getRepairs';
 import { createNewServiceman } from './settings/createServiceman';
 import { fetchAllServicemen } from './settings/fetchAllServicemen';
+import { updateServiceman } from './settings/updateServiceman';
+import { deleteServiceman } from './settings/deleteServiceman';
 
 export default function* rootSaga(): any {
 	yield all([
@@ -34,6 +36,14 @@ export default function* rootSaga(): any {
 		yield takeLatest(
 			watcherTypes.WATCH_FETCH_ALL_SERVICEMEN,
 			fetchAllServicemen
+		),
+		yield takeLatest(
+			watcherTypes.WATCH_UPDATE_SERVICEMAN,
+			updateServiceman
+		),
+		yield takeLatest(
+			watcherTypes.WATCH_DELETE_SERVICEMAN,
+			deleteServiceman
 		),
 	]);
 }
