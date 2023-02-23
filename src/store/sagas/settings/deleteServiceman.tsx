@@ -6,5 +6,17 @@ export function* deleteServiceman(action: {
 	type: string;
 	payload: string;
 }): any {
-	yield put({ type: actionTypes.DELETE_SERVICEMAN, payload: action.payload });
+	try {
+		const response = yield axios.delete(
+			`settings/delete-serviceman/${action.payload}`
+		);
+		if (response.status === 200) {
+			yield put({
+				type: actionTypes.DELETE_SERVICEMAN,
+				payload: action.payload,
+			});
+		}
+	} catch (err) {
+		console.log(err);
+	}
 }

@@ -144,7 +144,15 @@ const ServicemenList: React.FC = () => {
 								>
 									Zapisz zmiany
 								</Button>
-								<Button>Usuń serwisanta</Button>
+								<Button
+									onClick={() =>
+										handleClickedDelete({
+											servicemanId: serviceman._id,
+										})
+									}
+								>
+									Usuń serwisanta
+								</Button>
 							</ButtonGroup>
 						</Styled.Row>
 					);

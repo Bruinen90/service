@@ -41,7 +41,6 @@ const SettingsField: React.FC<SettingsFieldProps> = ({
 	};
 
 	const handleClickSave = (data: any) => {
-		// console.log(data);
 		dispatch(
 			actionCreators.createSettingsField({
 				settingsCategory: category,
@@ -68,8 +67,6 @@ const SettingsField: React.FC<SettingsFieldProps> = ({
 			payload: { _id: _id, category: category },
 		});
 	};
-
-	console.log('REQUIRED', name, required);
 
 	return (
 		<Styled.Wrapper>

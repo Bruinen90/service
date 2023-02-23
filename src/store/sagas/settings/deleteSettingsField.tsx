@@ -8,12 +8,11 @@ import { FieldCategory } from '../../../types/Settings';
 export function* deleteSettingsField(action: {
 	type: string;
 	payload: { _id: string; category: FieldCategory };
-}) {
+}): any {
 	try {
 		const response = yield axios.delete(
 			`settings/delete-field/${action.payload._id}`
 		);
-		console.log(response);
 		if (response.status === 200) {
 			yield put(
 				actionCreators.deleteSettingsFiels({
