@@ -18,6 +18,7 @@ import {
 	MenuItem,
 } from '@mui/material';
 import InputWrapper from '../InputWrapper/InputWrapper';
+import { Field } from '../../types/Settings';
 
 //Types
 interface ProblemFormProps {
@@ -27,9 +28,20 @@ interface ProblemFormProps {
 const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 	const dispatch = useDispatch();
 
-	const problemFields = useSelector(
-		(state: State) => state.settings.repairs.fields
-	);
+	const servicemen = useSelector((state: State) => state.settings.servicemen);
+	const servicemanField: Field = {
+		category: 'repairs',
+		name: 'serviceman',
+		inputLabel: 'Serwisant',
+		radios: servicemen.map(serviceman => serviceman.name),
+		_id: 'serviceman',
+		type: 'radio',
+	};
+
+	const problemFields = [
+		...useSelector((state: State) => state.settings.repairs.fields),
+		servicemanField,
+	];
 
 	const problemData = useSelector((state: State) => state.newRepair.problem);
 
@@ -93,7 +105,9 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 										<TextField
 											autoFocus={inputIndex === 0}
 											name={fieldNameNoSpaces}
-											label={field.name}
+											label={
+												field.inputLabel || field.name
+											}
 											onChange={handleUpdateProblemData}
 											value={
 												problemData[
@@ -121,7 +135,9 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 													name={fieldNameNoSpaces}
 												/>
 											}
-											label={field.name}
+											label={
+												field.inputLabel || field.name
+											}
 										/>
 									</InputWrapper>
 								);
@@ -132,13 +148,16 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 											<InputLabel
 												id={field._id + '_label'}
 											>
-												{field.name}
+												{field.inputLabel || field.name}
 											</InputLabel>
 											<Select
 												autoFocus={inputIndex === 0}
 												labelId={field._id + '_label'}
 												id={field._id}
-												label={field.name}
+												label={
+													field.inputLabel ||
+													field.name
+												}
 												onChange={
 													handleUpdateProblemData
 												}

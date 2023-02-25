@@ -1,3 +1,5 @@
+import { FetchedServiceman } from './Settings';
+
 export type NewRepairTab = 'customer' | 'device' | 'repair' | 'summary';
 
 export type TabsArr = Array<{
@@ -12,7 +14,10 @@ export type RepairStatus =
 	| 'done';
 
 export interface FetchedRepair {
-	repairData: { [key: string]: string | boolean | undefined };
+	repairData: {
+		serviceman: FetchedServiceman;
+		[key: string]: string | boolean | undefined | FetchedServiceman;
+	};
 	customer: {
 		_id: string;
 		phoneNumer: string;

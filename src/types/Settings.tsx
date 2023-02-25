@@ -9,6 +9,7 @@ export interface Field {
 	radios?: string[];
 	required?: boolean;
 	category: FieldCategory;
+	inputLabel?: string;
 }
 
 export interface CreatedServiceman {

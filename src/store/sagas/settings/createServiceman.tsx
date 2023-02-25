@@ -16,7 +16,6 @@ export function* createNewServiceman(action: {
 			...action.payload,
 			...response.data,
 		};
-		console.log(newServicemanData);
 		if (response.data) {
 			yield put({
 				type: actionTypes.ADD_NEW_SERVICEMAN,

@@ -71,13 +71,7 @@ const ServicemenList: React.FC = () => {
 		serviceman: EditableServiceman;
 	}) => {
 		setCurrentServicemen(prev =>
-			prev.map(serviceman => {
-				if (serviceman._id === serviceman._id) {
-					return { ...serviceman, inEdit: false };
-				} else {
-					return serviceman;
-				}
-			})
+			prev.map(prevServiceman => ({ ...prevServiceman, inEdit: false }))
 		);
 		dispatch({
 			type: watcherTypes.WATCH_UPDATE_SERVICEMAN,
@@ -150,6 +144,7 @@ const ServicemenList: React.FC = () => {
 											servicemanId: serviceman._id,
 										})
 									}
+									startIcon={<DeleteIcon />}
 								>
 									Usuń serwisanta
 								</Button>
@@ -179,6 +174,7 @@ const ServicemenList: React.FC = () => {
 											servicemanId: serviceman._id,
 										})
 									}
+									startIcon={<DeleteIcon />}
 								>
 									Usuń serwisanta
 								</Button>

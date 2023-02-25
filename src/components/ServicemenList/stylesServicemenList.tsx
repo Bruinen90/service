@@ -4,6 +4,6 @@ export const Wrapper = styled.div``;
 
 export const Row = styled.div`
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 2fr;
 	margin-bottom: 1rem;
 `;

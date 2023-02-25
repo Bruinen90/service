@@ -64,6 +64,13 @@ const RepairsList: React.FC<RepairsListProps> = ({ repairs, dataFields }) => {
 			readableName: 'Numer naprawy',
 			category: 'repairs',
 		},
+		{
+			name: 'serviceman',
+			_id: 'serviceman',
+			type: 'radio',
+			readableName: 'Serwisant',
+			category: 'repairs',
+		},
 		...dataFields.devices.fields,
 		...dataFields.customers.fields,
 		...dataFields.repairs.fields,
@@ -87,6 +94,14 @@ const RepairsList: React.FC<RepairsListProps> = ({ repairs, dataFields }) => {
 			let value = repair[category][removeSpaces(field.name)];
 			if (value === undefined) {
 				value = repair[category][field.name];
+			}
+			// For boolean types
+			if (typeof value === 'boolean') {
+				value = value ? 'TAK' : 'NIE';
+			}
+			// Workaround for serviceman object type
+			if (typeof value === 'object') {
+				value = value.name;
 			}
 			row[removeSpaces(field.name)] = value;
 		});
