@@ -38,9 +38,18 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 		type: 'radio',
 	};
 
+	const enddateField: Field = {
+		category: 'repairs',
+		name: 'enddate',
+		inputLabel: 'Data ukończenia',
+		_id: 'enddate',
+		type: 'date',
+	};
+
 	const problemFields = [
 		...useSelector((state: State) => state.settings.repairs.fields),
 		servicemanField,
+		enddateField,
 	];
 
 	const problemData = useSelector((state: State) => state.newRepair.problem);
@@ -180,6 +189,30 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 										</FormControl>
 									</InputWrapper>
 								);
+							case 'date':
+								return (
+									<InputWrapper key={field._id}>
+										<TextField
+											autoFocus={inputIndex === 0}
+											name={fieldNameNoSpaces}
+											label={
+												field.inputLabel || field.name
+											}
+											onChange={handleUpdateProblemData}
+											value={
+												problemData[
+													fieldNameNoSpaces
+												] || ''
+											}
+											InputLabelProps={{
+												shrink: true,
+											}}
+											type='date'
+										/>
+									</InputWrapper>
+								);
+							default:
+								throw new Error('Invalid input type value');
 						}
 					})}
 					<Button type='submit'>Zapisz</Button>

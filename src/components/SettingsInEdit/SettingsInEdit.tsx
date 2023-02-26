@@ -37,7 +37,7 @@ interface FormInterface {
 		touched: boolean;
 	};
 	type: {
-		value: 'text' | 'radio' | 'checkbox';
+		value: FieldType;
 		hasError: boolean;
 		touched: boolean;
 	};

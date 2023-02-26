@@ -50,6 +50,7 @@ const generateOutputCell = ({
 
 const RepairsList: React.FC<RepairsListProps> = ({ repairs, dataFields }) => {
 	const fields: OutputField[] = [
+		// "Fixed" fields
 		{
 			name: 'phoneNumber',
 			_id: 'phoneNumber',
@@ -71,6 +72,14 @@ const RepairsList: React.FC<RepairsListProps> = ({ repairs, dataFields }) => {
 			readableName: 'Serwisant',
 			category: 'repairs',
 		},
+		{
+			name: 'enddate',
+			_id: 'enddate',
+			type: 'date',
+			readableName: 'Data ukończenia',
+			category: 'repairs',
+		},
+		// Fileds added by admin in settings
 		...dataFields.devices.fields,
 		...dataFields.customers.fields,
 		...dataFields.repairs.fields,

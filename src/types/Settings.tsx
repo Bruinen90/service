@@ -1,4 +1,4 @@
-export type FieldType = 'text' | 'radio' | 'checkbox';
+export type FieldType = 'text' | 'radio' | 'checkbox' | 'date';
 
 export type FieldCategory = 'customers' | 'repairs' | 'devices';
 
