@@ -1,4 +1,7 @@
+import { Device } from './Device';
+
 export interface ICustomer {
 	phoneNumber: string;
-	[key: string]: string | number | boolean | Date;
+	devices?: Device[];
+	[key: string]: any;
 }

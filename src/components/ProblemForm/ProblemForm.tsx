@@ -208,6 +208,7 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 												shrink: true,
 											}}
 											type='date'
+											required={true}
 										/>
 									</InputWrapper>
 								);
@@ -215,7 +216,6 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 								throw new Error('Invalid input type value');
 						}
 					})}
-					<Button type='submit'>Zapisz</Button>
 				</FormGroup>
 			</form>
 			<Button variant='outlined'>Dodaj tylko klienta</Button>

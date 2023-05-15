@@ -11,6 +11,9 @@ import {
 	FormGroup,
 	TextField,
 	Button,
+	List,
+	ListItemButton,
+	ListItemText,
 } from '@mui/material';
 import { removeSpaces } from '../../common/functions';
 
@@ -22,6 +25,7 @@ import * as Styled from './stylesDeviceForm';
 
 //Types
 import { State } from '../../types/State';
+
 interface DeviceFormProps {
 	goToNextStep: () => void;
 }
@@ -34,6 +38,10 @@ const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
 	);
 
 	const deviceData = useSelector((state: State) => state.newRepair.device);
+
+	const customerDevicesList = useSelector(
+		(state: State) => state.newRepair.customer.devices
+	);
 
 	interface DeviceFields {
 		[key: string]: string | number | boolean;
@@ -167,6 +175,18 @@ const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
 						}
 					})}
 				</FormGroup>
+				{customerDevicesList && customerDevicesList.length > 0 && (
+					<List>
+						{customerDevicesList.map(device => (
+							<ListItemButton>
+								<ListItemText
+									primary={device.nazwa_sprzętu as string}
+									secondary={device.numer_seryjny as string}
+								/>
+							</ListItemButton>
+						))}
+					</List>
+				)}
 			</form>
 			<Button variant='outlined'>Dodaj tylko klienta</Button>
 			<Button variant='contained' onClick={goToNextStep}>

@@ -73,6 +73,13 @@ const RepairsList: React.FC<RepairsListProps> = ({ repairs, dataFields }) => {
 			category: 'repairs',
 		},
 		{
+			name: 'addedDate',
+			_id: 'addedDate',
+			type: 'date',
+			readableName: 'Data przyjęcia',
+			category: 'repairs',
+		},
+		{
 			name: 'enddate',
 			_id: 'enddate',
 			type: 'date',

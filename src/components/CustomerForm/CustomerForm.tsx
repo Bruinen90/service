@@ -15,6 +15,7 @@ import {
 	Button,
 } from '@mui/material';
 import InputWrapper from '../InputWrapper/InputWrapper';
+import DuplicatesSearchEngine from '../DuplicatesSearchEngine/DuplicatesSearchEngine';
 
 //Types
 interface CustomerFormProps {
@@ -138,13 +139,23 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ goToNextStep }) => {
 						}
 					})}
 					<InputWrapper>
-						<TextField
-							name='phoneNumber'
-							label='Numer telefonu'
-							key='phoneNumber'
-							onChange={handleUpdateCustomerData}
-							value={customerData.phoneNumber}
-						/>
+						<>
+							<TextField
+								name='phoneNumber'
+								label='Numer telefonu'
+								key='phoneNumber'
+								onChange={handleUpdateCustomerData}
+								value={customerData.phoneNumber}
+							/>
+							<DuplicatesSearchEngine
+								category='customer'
+								searchKey='phoneNumber'
+								value={customerData.phoneNumber}
+								storeUpdateActionType={
+									actionTypes.SET_CUSTOMER_DATA
+								}
+							/>
+						</>
 					</InputWrapper>
 				</FormGroup>
 			</form>
