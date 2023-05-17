@@ -25,6 +25,7 @@ import * as Styled from './stylesDeviceForm';
 
 //Types
 import { State } from '../../types/State';
+import { Device } from '../../types/Device';
 
 interface DeviceFormProps {
 	goToNextStep: () => void;
@@ -86,6 +87,13 @@ const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
 				[input.name]:
 					input.type === 'checkbox' ? input.checked : input.value,
 			},
+		});
+	};
+
+	const handleCustomersDeviceClicked = (device: Device) => {
+		dispatch({
+			type: actionTypes.SET_DEVICE_DATA,
+			payload: device,
 		});
 	};
 
@@ -178,7 +186,11 @@ const DeviceForm: React.FC<DeviceFormProps> = ({ goToNextStep }) => {
 				{customerDevicesList && customerDevicesList.length > 0 && (
 					<List>
 						{customerDevicesList.map(device => (
-							<ListItemButton>
+							<ListItemButton
+								onClick={() =>
+									handleCustomersDeviceClicked(device)
+								}
+							>
 								<ListItemText
 									primary={device.nazwa_sprzętu as string}
 									secondary={device.numer_seryjny as string}

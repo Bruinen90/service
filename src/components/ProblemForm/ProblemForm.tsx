@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actionTypes from '../../store/actions/actionTypes';
+import * as watcherTypes from '../../store/sagas/watcherTypes';
 import { removeSpaces } from '../../common/functions';
 
 //Styles
@@ -99,6 +100,16 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 					input.type === 'checkbox' ? input.checked : input.value,
 			},
 		});
+	};
+
+	const newRepairData = useSelector((state: State) => state.newRepair);
+
+	const handleSubmitNewRepair = () => {
+		dispatch({
+			type: watcherTypes.WATCH_SUBMIT_NEW_REPAIR,
+			payload: newRepairData,
+		});
+		goToNextStep();
 	};
 
 	return (
@@ -219,8 +230,8 @@ const ProblemForm: React.FC<ProblemFormProps> = ({ goToNextStep }) => {
 				</FormGroup>
 			</form>
 			<Button variant='outlined'>Dodaj tylko klienta</Button>
-			<Button variant='contained' onClick={goToNextStep}>
-				Dalej
+			<Button variant='contained' onClick={handleSubmitNewRepair}>
+				Zapisz i pokaż podsumowanie
 			</Button>
 		</Styled.Wrapper>
 	);

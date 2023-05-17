@@ -27,6 +27,11 @@ const newRepairReducer = (
 				...state,
 				problem: { ...state.problem, ...action.payload },
 			};
+		case actionTypes.SET_NEW_REPAIR:
+			return {
+				...state,
+				...action.payload,
+			};
 		case actionTypes.SET_REPAIR:
 			return { ...state };
 		default:
